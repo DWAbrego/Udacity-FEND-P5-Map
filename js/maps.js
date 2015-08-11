@@ -1,6 +1,10 @@
-var myCenter=new google.maps.LatLng(29.55464378,-95.06847382);
+var MapObj = function() {
+  
+}
 
-//http://www.mapcoordinates.net/en
+
+//
+////http://www.mapcoordinates.net/en
 // wikipedia has actual coordinates of landmarks, include galveston
 var gLocations = [
 	{ "name1": "Olive X", "url": "http://www.olivegarden.com", "category": "Thomas1", "lat": "29.54769989", "lon": "-95.01894951", "x1": 0 , marker: ""},
@@ -31,6 +35,8 @@ function myFunctionX(idx) {
 // create map and markers
 function initializeMap()
 {
+  var myCenter=new google.maps.LatLng(29.55464378,-95.06847382);
+
 	var infowindow = new google.maps.InfoWindow;
 
 	var mapProp = {

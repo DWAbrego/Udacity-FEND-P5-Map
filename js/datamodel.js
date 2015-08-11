@@ -1,11 +1,4 @@
-var stringStartsWith = function (string, startsWith) {
-    string = string || "";
-    if (startsWith.length > string.length)
-        return false;
-    return string.substring(0, startsWith.length) === startsWith;
-};
 
-//var placesOfInterest = gLocations;
 
 var viewModel= function() {
 	var self = this;
@@ -19,9 +12,18 @@ var viewModel= function() {
 	   console.log(item.name1);
   	}
 
-	self.centerMap =  function(item) {
-	   centerMap();
-  	}
+	//self.centerMap =  function(item) {
+	//   centerMap();
+    //	}
+
+// utility function used to compare filter string to search text
+self.stringStartsWith = function (string, startsWith) {
+    string = string || "";
+    if (startsWith.length > string.length)
+        return false;
+    return string.substring(0, startsWith.length) === startsWith;
+}
+
 
 	self.SearchResults1 = ko.computed(function(){
 
@@ -48,13 +50,13 @@ var viewModel= function() {
 
     // only show markers that have a name that matches the filter text box
 	for (i1 = 0; i1 < gLocations.length; i1++) {
-      if(stringStartsWith(gLocations[i1].name1.toLowerCase(), filter)) {
+      if(self.stringStartsWith(gLocations[i1].name1.toLowerCase(), filter)) {
         gLocations[i1].marker.setVisible(true);
       }
     }
 
 
-			return stringStartsWith(item.name1.toLowerCase(), filter);
+			return self.stringStartsWith(item.name1.toLowerCase(), filter);
 		});
 	});
 }; // viewModel
@@ -63,4 +65,4 @@ ko.applyBindings(new viewModel());
 
 
 //console.log(gMarkersArray);
-console.log(gLocations);
+//console.log(gLocations);

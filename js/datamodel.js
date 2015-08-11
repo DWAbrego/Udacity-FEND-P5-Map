@@ -24,6 +24,12 @@ var viewModel= function() {
   	}
 
 	self.SearchResults1 = ko.computed(function(){
+
+      // first hide all markers (markers stored in map.js)
+      	for (i1 = 0; i1 < gLocations.length; i1++) {
+        gLocations[i1].marker.setVisible(false);
+      }
+
 		return ko.utils.arrayFilter(self.placesArrayObs(), function(item)
 		{
 			// match marker here
@@ -36,7 +42,18 @@ var viewModel= function() {
 			//gLocations[2].marker.setVisible(false);
 			//gLocations[3].marker.setVisible(false);
       //console.log("[" + item.name1.toLowerCase() + "]  [" + self.filterText() + "]" );
+
 			var filter = self.filterText().toLowerCase();
+
+
+    // only show markers that have a name that matches the filter text box
+	for (i1 = 0; i1 < gLocations.length; i1++) {
+      if(stringStartsWith(gLocations[i1].name1.toLowerCase(), filter)) {
+        gLocations[i1].marker.setVisible(true);
+      }
+    }
+
+
 			return stringStartsWith(item.name1.toLowerCase(), filter);
 		});
 	});

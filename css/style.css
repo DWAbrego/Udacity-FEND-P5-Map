@@ -4,6 +4,16 @@
 	height:100%;
 }
 
+button {
+  border-style: none;
+  margin:5px;
+  min-width: 145px;
+}
+
+ul {
+    list-style-type: none;
+}
+
 #mapWell {
   height:680px;
 }

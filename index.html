@@ -27,7 +27,7 @@ want to encapsulate map into single object, move gLocations into 'locations'
       <div class="row">
         <div class="well">
         Search <input type="search" data-bind="value: filterText, textInput: filterText, valueUpdate: 'keyup'" />
-          <button data-bind="click: initializeMap">	Reset Map</button>
+          <!-- <button data-bind="click: initializeMap">	Reset Map</button> -->
         </div>
 
         <div class="row">
@@ -36,12 +36,9 @@ want to encapsulate map into single object, move gLocations into 'locations'
               Search Results
                 <ul data-bind="foreach: SearchResults1">
                   <li>
-                    <!-- <span data-bind="text: name1"></span>
-                    <span data-bind="text: category">  </span> -->
                     <button data-bind="text: name1, click: $parent.selectMarker"> </button>
                   </li>
                 </ul>
-              <!-- <button onclick="triggerMarker(1)">trigger marker</button>  -->
             </div>
           </div>
 

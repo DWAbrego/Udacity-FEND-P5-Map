@@ -1,6 +1,5 @@
-var MapObj = function () {}
-
-var gLocations = [{
+var MapAppObj = function () {
+ this.locations = [{
 		"name1" : "South Shore Harbor Resort",
 		"url" : "http://www.sshr.com",
 		"category" : "hotel",
@@ -20,7 +19,7 @@ var gLocations = [{
 		"name1" : "Space Center Houston",
 		"url" : "http://www.spacecenter.org",
 		"category" : "entertainment",
-		"lat" : "29.550402",
+            "lat" : "29.550402",
 		"lon" : "-95.097061",
 		"idx" : 2,
 		marker : ""
@@ -39,7 +38,7 @@ var gLocations = [{
 		"lat" : "29.563658",
 		"lon" : "-95.025204",
 		"idx" : 4,
-		marker : ""		
+		marker : ""
 	}, {
 		"name1" : "Main Event Entertainment",
 		"url" : "http://www.mainevent.com",
@@ -49,95 +48,92 @@ var gLocations = [{
 		"idx" : 5,
 		marker : ""
 	}
-];
+  ];
+}  // MapAppObj
 
-// populated when markers are generated below
-//var gMarkersArray = [];
+
+// create map and markers
+MapAppObj.prototype.initializeMap = function() {
+    var self=this;
+
+    var myCenter = new google.maps.LatLng(29.55464378, -95.06847382);
+
+    var infowindow = new google.maps.InfoWindow;
+
+    var mapProp = {
+        center : myCenter,
+        zoom : 12,
+        mapTypeId : google.maps.MapTypeId.ROADMAP
+    };
+
+    var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
+    var i;
+
+    // create the map markers for each location
+    for (i = 0; i < self.locations.length; i++) {
+        marker = new google.maps.Marker({
+                animation : google.maps.Animation.DROP,
+                position : new google.maps.LatLng(self.locations[i].lat, self.locations[i].lon),
+                map : map
+            });
+
+        // this adds live marker animation when clicked, make it timeout after a few bounces
+        // https://developers.google.com/maps/documentation/javascript/examples/marker-animations
+        google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                return function () {
+                    if (marker.getAnimation() != null) {
+                        marker.setAnimation(null);
+                    } else {
+                        marker.setAnimation(google.maps.Animation.BOUNCE);
+
+                        // don't let marker bounce indefinitely
+                        setTimeout(function () {
+                            marker.setAnimation(null);
+                        }, 2800);
+                    }
+                }
+            })(marker, i));
+
+        // adding the click listener for the marker's infowindow
+        // on the marker's infowindow, create a button with a link to a popupwindow
+        google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                return function () {
+                    var iws = "";
+                    //console.log(self.locations[i].url);
+                    //iws += "<button onclick='myPopupFunction(\"" + self.locations[i].url + "\")'> " + self.locations[i].name1 + "</button> " + i;
+
+                    clickStr = "window.open('" + self.locations[i].url + "' , '_blank', 'width=400, height=400');";
+
+                    console.log("clickstr=" + clickStr);
+                    iws += "<button onclick=\"" + clickStr + "\"> " + self.locations[i].name1 + "</button> " + i;
+                    console.log(iws);
+                    infowindow.setContent(iws);
+                    infowindow.open(map, marker);
+                }
+            })(marker, i));
+
+        // save markers reference so we can manipulate them later
+        self.locations[i].marker = marker;
+    }
+}
+
+MapAppObj.prototype.triggerMarker = function(idx) {
+	//google.maps.event.trigger(gMarkersArray[idx], 'click');
+	google.maps.event.trigger(this.locations[idx].marker, 'click');
+}
 
 // this function will be called from a link in the marker infowindow
 // it will popup the url passed to it in a small window
-function myPopupFunction(url1) {
+//function myPopupFunction(url1) {
 	//window.open('http://www.w3schools.com', '_blank', 'width=400, height=400');
-	console.log("popupfunction " + url1);
-	window.open(url1, '_blank', 'width=400, height=400');
-};
+//	console.log("popupfunction " + url1);
+	//window.open(url1, '_blank', 'width=400, height=400');
+//};
 
-function triggerMarker(idx) {
-	//google.maps.event.trigger(gMarkersArray[idx], 'click');
-	google.maps.event.trigger(gLocations[idx].marker, 'click');
-}
 
-// create map and markers
-function initializeMap() {
-	var myCenter = new google.maps.LatLng(29.55464378, -95.06847382);
 
-	var infowindow = new google.maps.InfoWindow;
-
-	var mapProp = {
-		center : myCenter,
-		zoom : 12,
-		mapTypeId : google.maps.MapTypeId.ROADMAP
-	};
-
-	var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-
-	//var marker=new google.maps.Marker({
-	//  position:myCenter,
-	//});
-
-	//var infowindow = new google.maps.InfoWindow({
-	//  content:"Hello World!"
-	//});
-
-	//google.maps.event.addListener(marker, 'click', function() {
-	//  infowindow.open(map,marker);
-	//});
-
-	var i;
-
-	// create the map markers for each location
-	for (i = 0; i < gLocations.length; i++) {
-		marker = new google.maps.Marker({
-				animation : google.maps.Animation.DROP,
-				position : new google.maps.LatLng(gLocations[i].lat, gLocations[i].lon),
-				map : map
-			});
-
-		// this adds live marker animation when clicked, make it timeout after a few bounces
-		// https://developers.google.com/maps/documentation/javascript/examples/marker-animations
-		google.maps.event.addListener(marker, 'click', (function (marker, i) {
-				return function () {
-					if (marker.getAnimation() != null) {
-						marker.setAnimation(null);
-					} else {
-						marker.setAnimation(google.maps.Animation.BOUNCE);
-
-						// don't let marker bounce indefinitely
-						setTimeout(function () {
-							marker.setAnimation(null);
-						}, 2800);
-					}
-				}
-			})(marker, i));
-
-		// adding the click listener for the marker's infowindow
-		// on the marker's infowindow, create a button with a link to a popupwindow
-		google.maps.event.addListener(marker, 'click', (function (marker, i) {
-				return function () {
-					var iws = "";
-					//				iws += "<button onclick='myPopupFunction('" + gLocations[i].url+ "')'> " + gLocations[i].name1 + "</button> " + i;
-					iws += "<button onclick='myPopupFunction(\"" + gLocations[i].url + "\")'> " + gLocations[i].name1 + "</button> " + i;
-					infowindow.setContent(iws);
-					infowindow.open(map, marker);
-				}
-			})(marker, i));
-
-		// save markers reference so we can manipulate them later
-		//gMarkersArray.push(marker);
-
-		gLocations[i].marker = marker;
-	}
-}
+var mapAppObj = new MapAppObj();
 
 // initialize map on window load event
-google.maps.event.addDomListener(window, 'load', initializeMap());
+google.maps.event.addDomListener(window, 'load', mapAppObj.initializeMap());

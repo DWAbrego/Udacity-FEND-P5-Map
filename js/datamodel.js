@@ -4,19 +4,13 @@ var viewModel = function () {
 	var self = this;
 	self.filterText = ko.observable("");
 
-	self.placesArrayObs = ko.observableArray(gLocations);
-
-	//self.markers = ko.observableArray(gMarkersArray);
+	self.placesArrayObs = ko.observableArray(mapAppObj.locations);
 
 	// this function will animate the marker that corresponds with the item (from the filter search) that was pressed
 	self.selectMarker = function (item) {
 		console.log(item.idx);
-		triggerMarker(item.idx);
+		mapAppObj.triggerMarker(item.idx);
 	}
-	
-	//self.centerMap =  function(item) {
-	//   centerMap();
-	//	}
 
 	// utility function used to compare filter string to search text
 	self.stringStartsWith = function (string, startsWith) {
@@ -29,28 +23,20 @@ var viewModel = function () {
 	self.SearchResults1 = ko.computed(function () {
 
 			// first hide all markers (markers stored in map.js)
-			for (i1 = 0; i1 < gLocations.length; i1++) {
-				gLocations[i1].marker.setVisible(false);
+			for (i1 = 0; i1 < mapAppObj.locations.length; i1++) {
+				mapAppObj.locations[i1].marker.setVisible(false);
 			}
 
 			return ko.utils.arrayFilter(self.placesArrayObs(), function (item) {
 				// match marker here
 				// then set visibility of pin  pin.marker.setVisible(match);
-				// last answer  http://stackoverflow.com/questions/29557938/removing-map-pin-with-search
-
-				// this makes the markers invisible, they were stored in a global array in maps.js
-				//gLocations[0].marker.setVisible(false);
-				//gLocations[1].marker.setVisible(false);
-				//gLocations[2].marker.setVisible(false);
-				//gLocations[3].marker.setVisible(false);
-				//console.log("[" + item.name1.toLowerCase() + "]  [" + self.filterText() + "]" );
 
 				var filter = self.filterText().toLowerCase();
 
 				// only show markers that have a name that matches the filter text box
-				for (i1 = 0; i1 < gLocations.length; i1++) {
-					if (self.stringStartsWith(gLocations[i1].name1.toLowerCase(), filter)) {
-						gLocations[i1].marker.setVisible(true);
+				for (i1 = 0; i1 < mapAppObj.locations.length; i1++) {
+					if (self.stringStartsWith(mapAppObj.locations[i1].name1.toLowerCase(), filter)) {
+						mapAppObj.locations[i1].marker.setVisible(true);
 					}
 				}
 
@@ -62,4 +48,4 @@ var viewModel = function () {
 ko.applyBindings(new viewModel());
 
 //console.log(gMarkersArray);
-//console.log(gLocations);
+//console.log(mapAppObj.locations);

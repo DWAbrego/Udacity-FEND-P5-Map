@@ -1,6 +1,6 @@
 
 
-var viewModel= function() {
+var viewModel = function () {
 	var self = this;
 	self.filterText = ko.observable("");
 
@@ -8,61 +8,58 @@ var viewModel= function() {
 
 	//self.markers = ko.observableArray(gMarkersArray);
 
-	self.testClick =  function(item) {
-	   console.log(item.name1);
-  	}
-
+	// this function will animate the marker that corresponds with the item (from the filter search) that was pressed
+	self.selectMarker = function (item) {
+		console.log(item.idx);
+		triggerMarker(item.idx);
+	}
+	
 	//self.centerMap =  function(item) {
 	//   centerMap();
-    //	}
+	//	}
 
-// utility function used to compare filter string to search text
-self.stringStartsWith = function (string, startsWith) {
-    string = string || "";
-    if (startsWith.length > string.length)
-        return false;
-    return string.substring(0, startsWith.length) === startsWith;
-}
+	// utility function used to compare filter string to search text
+	self.stringStartsWith = function (string, startsWith) {
+		string = string || "";
+		if (startsWith.length > string.length)
+			return false;
+		return string.substring(0, startsWith.length) === startsWith;
+	}
 
+	self.SearchResults1 = ko.computed(function () {
 
-	self.SearchResults1 = ko.computed(function(){
+			// first hide all markers (markers stored in map.js)
+			for (i1 = 0; i1 < gLocations.length; i1++) {
+				gLocations[i1].marker.setVisible(false);
+			}
 
-      // first hide all markers (markers stored in map.js)
-      	for (i1 = 0; i1 < gLocations.length; i1++) {
-        gLocations[i1].marker.setVisible(false);
-      }
+			return ko.utils.arrayFilter(self.placesArrayObs(), function (item) {
+				// match marker here
+				// then set visibility of pin  pin.marker.setVisible(match);
+				// last answer  http://stackoverflow.com/questions/29557938/removing-map-pin-with-search
 
-		return ko.utils.arrayFilter(self.placesArrayObs(), function(item)
-		{
-			// match marker here
-			// then set visibility of pin  pin.marker.setVisible(match);
-			// last answer  http://stackoverflow.com/questions/29557938/removing-map-pin-with-search
+				// this makes the markers invisible, they were stored in a global array in maps.js
+				//gLocations[0].marker.setVisible(false);
+				//gLocations[1].marker.setVisible(false);
+				//gLocations[2].marker.setVisible(false);
+				//gLocations[3].marker.setVisible(false);
+				//console.log("[" + item.name1.toLowerCase() + "]  [" + self.filterText() + "]" );
 
-			// this makes the markers invisible, they were stored in a global array in maps.js
-			//gLocations[0].marker.setVisible(false);
-			//gLocations[1].marker.setVisible(false);
-			//gLocations[2].marker.setVisible(false);
-			//gLocations[3].marker.setVisible(false);
-      //console.log("[" + item.name1.toLowerCase() + "]  [" + self.filterText() + "]" );
+				var filter = self.filterText().toLowerCase();
 
-			var filter = self.filterText().toLowerCase();
+				// only show markers that have a name that matches the filter text box
+				for (i1 = 0; i1 < gLocations.length; i1++) {
+					if (self.stringStartsWith(gLocations[i1].name1.toLowerCase(), filter)) {
+						gLocations[i1].marker.setVisible(true);
+					}
+				}
 
-
-    // only show markers that have a name that matches the filter text box
-	for (i1 = 0; i1 < gLocations.length; i1++) {
-      if(self.stringStartsWith(gLocations[i1].name1.toLowerCase(), filter)) {
-        gLocations[i1].marker.setVisible(true);
-      }
-    }
-
-
-			return self.stringStartsWith(item.name1.toLowerCase(), filter);
+				return self.stringStartsWith(item.name1.toLowerCase(), filter);
+			});
 		});
-	});
 }; // viewModel
 
 ko.applyBindings(new viewModel());
-
 
 //console.log(gMarkersArray);
 //console.log(gLocations);

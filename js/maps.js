@@ -1,18 +1,55 @@
-var MapObj = function() {
-  
-}
+var MapObj = function () {}
 
-
-//
-////http://www.mapcoordinates.net/en
-// wikipedia has actual coordinates of landmarks, include galveston
-var gLocations = [
-	{ "name1": "Olive X", "url": "http://www.olivegarden.com", "category": "Thomas1", "lat": "29.54769989", "lon": "-95.01894951", "x1": 0 , marker: ""},
-	{ "name1": "Red Lobster", "url": "http://www.redlobster.com", "category": "Thomas2", "lat": "29.58002597", "lon": "-95.09748459", "x1": 1 , marker: "" },
-	{ "name1": "Red Lobster3", "url": "http://www.redlobster.com", "category": "Thomas3", "lat": "29.55972073", "lon": "-95.02298355", "x1": 2 , marker: "" },
-	{ "name1": "foo", "url": "http://www.cnn.com", "category": "ddd", "lat": "29.53791791", "lon": "-95.05362511", "x1": 3 , marker: "" },
-	{ "name1": "bar", "url": "http://www.yahoo.com", "category": "eee", "lat": "29.53030075", "lon": "-95.04178047", "x1": 4 , marker: "" }
-  ];
+var gLocations = [{
+		"name1" : "South Shore Harbor Resort",
+		"url" : "http://www.sshr.com",
+		"category" : "hotel",
+		"lat" : "29.545310",
+		"lon" : "-95.065914",
+		"idx" : 0,
+		marker : ""
+	}, {
+		"name1" : "Armand Bayou Nature Center",
+		"url" : "http://www.abnc.org",
+		"category" : "nature",
+		"lat" : "29.593904",
+		"lon" : "-95.074970",
+		"idx" : 1,
+		marker : ""
+	}, {
+		"name1" : "Space Center Houston",
+		"url" : "http://www.spacecenter.org",
+		"category" : "entertainment",
+		"lat" : "29.550402",
+		"lon" : "-95.097061",
+		"idx" : 2,
+		marker : ""
+	}, {
+		"name1" : "Kemah Boardwalk",
+		"url" : "http://www.KemahBoardwalk.com",
+		"category" : "entertainment",
+		"lat" : "29.547349",
+		"lon" : "-95.018525",
+		"idx" : 3,
+		marker : ""
+	}, {
+		"name1" : "Tookies Burgers",
+		"url" : "http://www.tookiesburgers.com",
+		"category" : "food",
+		"lat" : "29.563658",
+		"lon" : "-95.025204",
+		"idx" : 4,
+		marker : ""		
+	}, {
+		"name1" : "Main Event Entertainment",
+		"url" : "http://www.mainevent.com",
+		"category" : "entertainment",
+		"lat" : "29.524015",
+		"lon" : "-95.122994",
+		"idx" : 5,
+		marker : ""
+	}
+];
 
 // populated when markers are generated below
 //var gMarkersArray = [];
@@ -20,32 +57,29 @@ var gLocations = [
 // this function will be called from a link in the marker infowindow
 // it will popup the url passed to it in a small window
 function myPopupFunction(url1) {
-    //window.open('http://www.w3schools.com', '_blank', 'width=400, height=400');
-    console.log ("popupfunction " + url1);
-    window.open(url1, '_blank', 'width=400, height=400');
+	//window.open('http://www.w3schools.com', '_blank', 'width=400, height=400');
+	console.log("popupfunction " + url1);
+	window.open(url1, '_blank', 'width=400, height=400');
 };
 
-function myFunctionX(idx) {
+function triggerMarker(idx) {
 	//google.maps.event.trigger(gMarkersArray[idx], 'click');
-	  google.maps.event.trigger(gLocations[idx].marker, 'click');
+	google.maps.event.trigger(gLocations[idx].marker, 'click');
 }
 
-
-
 // create map and markers
-function initializeMap()
-{
-  var myCenter=new google.maps.LatLng(29.55464378,-95.06847382);
+function initializeMap() {
+	var myCenter = new google.maps.LatLng(29.55464378, -95.06847382);
 
 	var infowindow = new google.maps.InfoWindow;
 
 	var mapProp = {
-	  center:myCenter,
-	  zoom:12,
-	  mapTypeId:google.maps.MapTypeId.ROADMAP
+		center : myCenter,
+		zoom : 12,
+		mapTypeId : google.maps.MapTypeId.ROADMAP
 	};
 
-	var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+	var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
 
 	//var marker=new google.maps.Marker({
 	//  position:myCenter,
@@ -64,39 +98,39 @@ function initializeMap()
 	// create the map markers for each location
 	for (i = 0; i < gLocations.length; i++) {
 		marker = new google.maps.Marker({
-			animation: google.maps.Animation.DROP,
-			position: new google.maps.LatLng(gLocations[i].lat, gLocations[i].lon),
-			map: map
-		});
+				animation : google.maps.Animation.DROP,
+				position : new google.maps.LatLng(gLocations[i].lat, gLocations[i].lon),
+				map : map
+			});
 
-		// live marker animation when clicked, make it timeout after a few bounces
+		// this adds live marker animation when clicked, make it timeout after a few bounces
 		// https://developers.google.com/maps/documentation/javascript/examples/marker-animations
-		google.maps.event.addListener(marker, 'click', (function(marker, i) {
-			 return function() {
-				if (marker.getAnimation() != null) {
-					marker.setAnimation(null);
-				} else {
-					marker.setAnimation(google.maps.Animation.BOUNCE);
-
-					// don't let marker bounce indefinitely
-					setTimeout(function () {
+		google.maps.event.addListener(marker, 'click', (function (marker, i) {
+				return function () {
+					if (marker.getAnimation() != null) {
 						marker.setAnimation(null);
-					}, 2800);
-				}
-			 }
-		})(marker, i));
+					} else {
+						marker.setAnimation(google.maps.Animation.BOUNCE);
 
-        // the click listener for the marker's infowindow
+						// don't let marker bounce indefinitely
+						setTimeout(function () {
+							marker.setAnimation(null);
+						}, 2800);
+					}
+				}
+			})(marker, i));
+
+		// adding the click listener for the marker's infowindow
 		// on the marker's infowindow, create a button with a link to a popupwindow
-		google.maps.event.addListener(marker, 'click', (function(marker, i) {
-			 return function() {
-				var iws = "";
-//				iws += "<button onclick='myPopupFunction('" + gLocations[i].url+ "')'> " + gLocations[i].name1 + "</button> " + i;
-                iws += "<button onclick='myPopupFunction(\"" + gLocations[i].url + "\")'> " + gLocations[i].name1 + "</button> " + i;
-				infowindow.setContent(iws);
-				infowindow.open(map, marker);
-			 }
-		})(marker, i));
+		google.maps.event.addListener(marker, 'click', (function (marker, i) {
+				return function () {
+					var iws = "";
+					//				iws += "<button onclick='myPopupFunction('" + gLocations[i].url+ "')'> " + gLocations[i].name1 + "</button> " + i;
+					iws += "<button onclick='myPopupFunction(\"" + gLocations[i].url + "\")'> " + gLocations[i].name1 + "</button> " + i;
+					infowindow.setContent(iws);
+					infowindow.open(map, marker);
+				}
+			})(marker, i));
 
 		// save markers reference so we can manipulate them later
 		//gMarkersArray.push(marker);
@@ -107,12 +141,3 @@ function initializeMap()
 
 // initialize map on window load event
 google.maps.event.addDomListener(window, 'load', initializeMap());
-
-
-
-
-
-
-
-
-

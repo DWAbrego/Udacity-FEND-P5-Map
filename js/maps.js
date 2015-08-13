@@ -80,10 +80,7 @@ MapAppObj.prototype.initializeMap = function() {
             //iws += "<button onclick='myPopupFunction(\"" + self.locations[i].url + "\")'> " + self.locations[i].name1 + "</button> " + i;
 
             clickStr = "window.open('" + self.locations[i].url + "' , '_blank', 'width=400, height=400');";
-
-            console.log("clickstr=" + clickStr);
             iws += "<button onclick=\"" + clickStr + "\"> " + self.locations[i].name1 + "</button> ";
-            console.log(iws);
             infowindow.setContent(iws);
             infowindow.open(map, marker);
           }

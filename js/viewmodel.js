@@ -96,6 +96,12 @@ var viewModel = function () {
 
   self.placesArrayObs = ko.observableArray(model.locations);
 
+  // this will simply reset the map
+  self.initializeMapVm = function () {
+    mapAppObj.initializeMap();
+  }
+
+
   // this function will animate the marker that corresponds with the item (from the filter search) that was pressed
   self.selectMarker = function (item) {
       console.log(item.idx);

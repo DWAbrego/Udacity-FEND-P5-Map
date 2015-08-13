@@ -101,11 +101,10 @@ MapAppObj.prototype.initializeMap = function() {
 // This function is used to trigger the click event on a single
 // map marker.  It will be bound by knockout framework to the
 // select list in the html page (the list that is produced when a
-// filter is applied).  
+// filter is applied).
 //
 //////////////////////////////////////////////////////////////
 MapAppObj.prototype.triggerMarker = function(idx) {
-	//google.maps.event.trigger(gMarkersArray[idx], 'click');
 	google.maps.event.trigger(this.locations[idx].marker, 'click');
 } // triggerMarker()
 

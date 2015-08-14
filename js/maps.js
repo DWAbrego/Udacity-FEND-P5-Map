@@ -29,7 +29,7 @@ var MapAppObj = function (locationsx) {
   };
 
   this.map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-
+  this.infowindow = new google.maps.InfoWindow;
 }  // MapAppObj
 
 
@@ -44,7 +44,7 @@ var MapAppObj = function (locationsx) {
 MapAppObj.prototype.initializeMap = function() {
   var self=this;
 
-  var infowindow = new google.maps.InfoWindow;
+  //var infowindow = new google.maps.InfoWindow;
 
   var i;
 
@@ -75,18 +75,17 @@ MapAppObj.prototype.initializeMap = function() {
 
       // adding the click listener for the marker's infowindow
       // on the marker's infowindow, create a button with a link to a popupwindow
+/*
       google.maps.event.addListener(marker, 'click', (function (marker, i) {
           return function () {
             var iws = "";
-            //console.log(self.locations[i].url);
-            //iws += "<button onclick='myPopupFunction(\"" + self.locations[i].url + "\")'> " + self.locations[i].name1 + "</button> " + i;
-
             clickStr = "window.open('" + self.locations[i].url + "' , '_blank', 'width=400, height=400');";
             iws += "<button onclick=\"" + clickStr + "\"> " + self.locations[i].name1 + "</button> ";
-            infowindow.setContent(iws);
-            infowindow.open(this.map, marker);
+            self.infowindow.setContent(iws);
+            self.infowindow.open(this.map, marker);
           }
       })(marker, i));
+*/
 
       // save markers reference so we can manipulate them later
       self.locations[i].marker = marker;
@@ -113,10 +112,12 @@ MapAppObj.prototype.triggerMarker = function(idx) {
 
 	// now trigger the marker as if clicked
 	google.maps.event.trigger(this.locations[idx].marker, 'click');
+
+	// and reset the info window
+    this.infowindow.setContent("woot" + idx);
+    this.infowindow.open(this.map, this.locations[idx].marker);
+
 } // triggerMarker()
-
-
-
 
 
 
@@ -130,27 +131,91 @@ MapAppObj.prototype.triggerMarker = function(idx) {
     var url = "https://api.foursquare.com/v2/venues/search";
     url += "?client_id=MXDSBUBGPVFDLPZDUR1RPY0QNSP2YZ0X0JPAJNXSZ23CG5CU";
     url += "&client_secret=30515VPS1GZBJJ1K134WBAA4ZGCUCZXWEEMLVJFTCH5C2FCG";
-    url += "&v=20130815";
+    url += "&v=20130815";  // version parameter
     url += "&ll=" + lat + "," + lon;
-//    url += "&query=sushi";
 
+
+
+var url2 = "https://api.foursquare.com/v2/venues/4efcf02af9abd5b38dc3bef5";
+    url2 += "?client_id=MXDSBUBGPVFDLPZDUR1RPY0QNSP2YZ0X0JPAJNXSZ23CG5CU";
+    url2 += "&client_secret=30515VPS1GZBJJ1K134WBAA4ZGCUCZXWEEMLVJFTCH5C2FCG";
+    url2 += "&v=20130815";  // version parameter
+//    url += "&v=20130815";  // version parameter
 
     var wTimeout = setTimeout(function() {
       console.log("failed to get foursquare resources");
     }, 8000);
 
+var url3 = "https://api.foursquare.com/v2/venues/4efcf02af9abd5b38dc3bef5?client_id=MXDSBUBGPVFDLPZDUR1RPY0QNSP2YZ0X0JPAJNXSZ23CG5CU&client_secret=30515VPS1GZBJJ1K134WBAA4ZGCUCZXWEEMLVJFTCH5C2FCG&v=20130815";
 
-	$.getJSON(
-		url,
-		function(data) {
-		    $.each(data.response.venues, function(i,venues){
-				console.log(venues.name);            
+var xx=	$.getJSON(
+		url3,
+		function(data) { 
+			console.log( data) ;
+		    //$.each(data.response.venues, function(i,venues){
+				//console.log(venues.name);            
 				//content = '<p>' + venues.name + '</p>';
 		        //$(content).appendTo("#names");
-
-	       clearTimeout(wTimeout);
-		   });
+//console.log(venues);
+	       //clearTimeout(wTimeout);
+		   //});
 	});
+
+xx.complete(function() {
+  console.log( xx );
+  console.log( xx.responseText );
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+var jqxhr = $.get( url3, function( data ) {
+  //console.log("111" +  data );
+  
+}).done(function(data) {console.log("ok")});
+
+//       console.log (jqxhr);
+
+
+
+
+
+
+/*
+	$.ajax({
+	url: url3,
+	dataType: 'json',
+	success: function(response) {
+		 //console.log( "22222" + response);
+	 }
+    });
+*/
+
+/*
+$.ajax({
+    url: "https://api.foursquare.com/v2/venues/40a55d80f964a52020f31ee3/likes?oauth_token=2AQ2YAQBTSHOQKYPKGL2K1JBYL0WB5JPNEJEFLWM2UEVL5PM&v=20150709",
+    datatype: "jsonp",
+    success: function (data) {
+             callback(data);
+    }
+});
+
+function callback(data) { 
+  //do something with our data
+console.log(data);
+}
+*/
+
+
 }
 
 

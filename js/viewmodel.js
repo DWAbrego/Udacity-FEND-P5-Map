@@ -28,7 +28,8 @@ Model.locations = [{
          "lat" : "29.545310",
          "lon" : "-95.065914",
          "idx" : 0,
-         marker : ""
+         "yelpid" : "http://www.yelp.com/biz/space-center-houston-houston-4",
+         "marker" : ""
      }, {
          "name1" : "Armand Bayou Nature Center",
          "url" : "http://www.abnc.org",
@@ -36,15 +37,17 @@ Model.locations = [{
          "lat" : "29.593904",
          "lon" : "-95.074970",
          "idx" : 1,
-         marker : ""
+         "yelpid" : "http://www.yelp.com/biz/space-center-houston-houston-4",
+         "marker" : ""
      }, {
          "name1" : "Space Center Houston",
          "url" : "http://www.spacecenter.org",
          "category" : "entertainment",
-             "lat" : "29.550402",
+         "lat" : "29.550402",
          "lon" : "-95.097061",
          "idx" : 2,
-         marker : ""
+         "yelpid" : "http://www.yelp.com/biz/space-center-houston-houston-4",
+         "marker" : ""
      }, {
          "name1" : "Kemah Boardwalk",
          "url" : "http://www.KemahBoardwalk.com",
@@ -52,7 +55,8 @@ Model.locations = [{
          "lat" : "29.547349",
          "lon" : "-95.018525",
          "idx" : 3,
-         marker : ""
+         "yelpid" : "http://www.yelp.com/biz/space-center-houston-houston-4",
+         "marker" : ""
      }, {
          "name1" : "Tookies Burgers",
          "url" : "http://www.tookiesburgers.com",
@@ -60,7 +64,8 @@ Model.locations = [{
          "lat" : "29.563658",
          "lon" : "-95.025204",
          "idx" : 4,
-         marker : ""
+         "yelpid" : "http://www.yelp.com/biz/space-center-houston-houston-4",
+         "marker" : ""
      }, {
          "name1" : "Main Event Entertainment",
          "url" : "http://www.mainevent.com",
@@ -68,7 +73,8 @@ Model.locations = [{
          "lat" : "29.524015",
          "lon" : "-95.122994",
          "idx" : 5,
-         marker : ""
+         "yelpid" : "http://www.yelp.com/biz/space-center-houston-houston-4",
+         "marker" : ""
      }
   ]; // locations
 
@@ -100,15 +106,16 @@ var viewModel = function (locations) {
   // initialize map on window load event
   google.maps.event.addDomListener(window, 'load', mapAppObj.initializeMap());
 
+  // this is the filter text box
   self.filterText = ko.observable("");
 
+  // take list of locations (which is a javascript array of objects) and make it a ko observable
   self.placesArrayObs = ko.observableArray(locations);
 
-  // this will simply reset the map
+  // this is simply a convenience function to reset the map
   self.initializeMapVm = function () {
     mapAppObj.initializeMap();
   }
-
 
   // this function will animate the marker that corresponds with the item (from the filter search) that was pressed
   self.selectMarker = function (item) {
@@ -116,6 +123,7 @@ var viewModel = function (locations) {
   }
 
   // utility function used to compare filter string to search text
+  // 'stringStartsWith' is a deprecated method in knockout
   // http://stackoverflow.com/questions/17557789/using-contains-instead-of-stringstartswith-knockout-js
   self.stringStartsWith = function (string, startsWith) {
     string = string || "";

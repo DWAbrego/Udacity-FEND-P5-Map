@@ -8,6 +8,8 @@ button {
   border-style: none;
   margin:5px;
   min-width: 145px;
+  background-color: #337ab7;
+  color: whitesmoke;
 }
 
 ul {
@@ -16,6 +18,10 @@ ul {
 
 #mapWell {
   height:680px;
+}
+
+#searchResults{
+  padding-left:4px;
 }
 
 /********************************************************************

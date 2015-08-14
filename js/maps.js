@@ -104,186 +104,54 @@ MapAppObj.prototype.initializeMap = function() {
 //
 //////////////////////////////////////////////////////////////
 MapAppObj.prototype.triggerMarker = function(idx) {
+	loc = new google.maps.LatLng(this.locations[idx].lat, this.locations[idx].lon);
 
-  loc = new google.maps.LatLng(this.locations[idx].lat, this.locations[idx].lon);
-  // center the map at the lat/long of this marker
-  this.map.setCenter(loc);
+	// center the map at the lat/long of this marker
+	this.map.setCenter(loc);
 
-// #####################################@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-//loadYelp("pizza", this.locations[idx].lat, this.locations[idx].lon, 5 );
-loadFourSquare();
+	loadFourSquare(this.locations[idx].lat, this.locations[idx].lon);
 
-  // now trigger the marker as if clicked
-  google.maps.event.trigger(this.locations[idx].marker, 'click');
+	// now trigger the marker as if clicked
+	google.maps.event.trigger(this.locations[idx].marker, 'click');
 } // triggerMarker()
 
 
 
 
 
-// kw=keyword
-// rad = radius
-function loadYelp(kw, lat, lon, rad) {
-    var url = "http://api.yelp.com/business_review_search";
-    url += "?ywsid=w9ZXbvm45Y76AHISpjoabg&num_biz_requested=10&term=" + kw;
-    url += "&lat=" + lat + "&long=" + lon + "&radius=" + rad;
-    url += "&callback=?";
-  $.getJSON(url, function(x) {
-    if (x.message.text == "OK") {
-      if (x.businesses.length != 0) {
-        var res = x.businesses;
 
-        console.log(res);
+//////////////////////////////////////////////////////////////
+//
+// loadFourSquare():
+//
+//////////////////////////////////////////////////////////////
 
-        var allpts = [];
-        for (var i = 0; i < res.length; i++) {
-         //var place = res[i];
-         //var thisloc = new mxn.LatLonPoint(place.latitude, place.longitude);
-          //allpts.push(thisloc);
-          //var html = "<strong>" + place.name + "</strong><br />" + place.address1;
-          //html += "<br />" + place.city + ", " + place.state;
-          // Create and add marker to the map
-          //var mk = new mxn.Marker(thisloc);
-          //mk.setInfoBubble(html);
-          //mapstraction.addMarker(mk);
-        }
-       //mapstraction.centerAndZoomOnPoints(allpts);
-      }
-    }
-  });
- }
-
-
-
-
-
-
-
-
-// http://api.yelp.com/business_review_search?
-//ywsid=w9ZXbvm45Y76AHISpjoabg&num_biz_requested=10&term=pizza&lat=29.563658&long=-95.025204&radius=5&callback=jQuery21405295965003315359_1439573946467&_=1439573946471
-
-// https://www.yelp.com/developers/api_console
- function loadYelpBusiness(bid) {
-    var url = "http://api.yelp.com/v2/phone_search/?phone=2812442100";
-
-  $.getJSON(url, function(x) {
-    if (x.message.text == "OK") {
-      if (x.businesses.length != 0) {
-        var res = x.businesses; 
-
-        console.log(res);
-
-        var allpts = [];
-        for (var i = 0; i < res.length; i++) {
-         //var place = res[i];
-         //var thisloc = new mxn.LatLonPoint(place.latitude, place.longitude);
-          //allpts.push(thisloc);
-          //var html = "<strong>" + place.name + "</strong><br />" + place.address1;
-          //html += "<br />" + place.city + ", " + place.state;
-          // Create and add marker to the map
-          //var mk = new mxn.Marker(thisloc);
-          //mk.setInfoBubble(html);
-          //mapstraction.addMarker(mk);
-        }
-       //mapstraction.centerAndZoomOnPoints(allpts);
-      }
-    }
-  });
- }
-
-
-// https://www.yelp.com/developers/documentation/v1/search_api
-//https://github.com/Yelp/yelp-api/tree/master/v1/googlemaps_example
- function loadYelpBusiness3() {
-    var url = "http://api.yelp.com/v2/phone_search/?phone=2812442100";
-    url += "?ywsid=w9ZXbvm45Y76AHISpjoabg&num_biz_requested=10";
-    url += "&callback=?";
-
-
-    var wTimeout = setTimeout(function() {
-      console.log("failed to get wikipedia resources");
-    }, 8000);
-
-    $.ajax({
-     url: url,
-     dataType:"jsonP",
-     success: function(response) {
-       var articleList = response[1];
-
-       for (var i1=0; i1<articleList.length; i1++) {
-         articleStr = articleList[i1];
-         var url = 'http://en.wikipedia.org/wiki/' + articleStr;
-         //$wikiElem.append('<li><a href="' + url + '">' + articleStr + '</a></li>');
-       };
-
-       clearTimeout(wTimeout);
-     }
-    });
-}
-
-
-
-
-
-
-/*
-https://api.foursquare.com/v2/venues/search
-  ?client_id=CLIENT_ID
-  &client_secret=CLIENT_SECRET
-  &v=20130815
-  &ll=40.7,-74
-  &query=sushi
-*/
-
- function loadFourSquare() {
+ function loadFourSquare(lat, lon) {
     var url = "https://api.foursquare.com/v2/venues/search";
     url += "?client_id=MXDSBUBGPVFDLPZDUR1RPY0QNSP2YZ0X0JPAJNXSZ23CG5CU";
     url += "&client_secret=30515VPS1GZBJJ1K134WBAA4ZGCUCZXWEEMLVJFTCH5C2FCG";
     url += "&v=20130815";
-    url += "&ll=40.7,-74";
-    url += "&query=sushi";
+    url += "&ll=" + lat + "," + lon;
+//    url += "&query=sushi";
 
 
     var wTimeout = setTimeout(function() {
-      console.log("failed to get wikipedia resources");
+      console.log("failed to get foursquare resources");
     }, 8000);
 
 
-$.getJSON(url,
-    function(data) {
-        $.each(data.response.venues, function(i,venues){
-			console.log(venues.name);            
-			//content = '<p>' + venues.name + '</p>';
-            //$(content).appendTo("#names");
-       });
-});
+	$.getJSON(
+		url,
+		function(data) {
+		    $.each(data.response.venues, function(i,venues){
+				console.log(venues.name);            
+				//content = '<p>' + venues.name + '</p>';
+		        //$(content).appendTo("#names");
 
-
-/*
-    $.ajax({
-     url: url,
-     success: function(response) {
-		console.log(response);
-       var articleList = response[1];
-
-       for (var i1=0; i1<articleList.length; i1++) {
-         articleStr = articleList[i1];
-         var url = 'http://en.wikipedia.org/wiki/' + articleStr;
-         //$wikiElem.append('<li><a href="' + url + '">' + articleStr + '</a></li>');
-       };
-
-       clearTimeout(wTimeout);
-     }
-    });
-*/
-
-
+	       clearTimeout(wTimeout);
+		   });
+	});
 }
-
-
-
-
 
 
 

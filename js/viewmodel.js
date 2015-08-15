@@ -12,15 +12,19 @@
 // Model():
 //
 // This class is used to create the model for the MVVC pattern.
-// It will be solely location data.
+// It will be solely location data, and 'locations' will be used
+// as a static variable.  
 //
 // static variable discussion:
 // http://stackoverflow.com/questions/1535631/static-variables-in-javascript?lq=1
 //
+// Found 'foursquareid' by looking up the business in foursquare, and
+// the id is the last part of the URL e.g.
+// https://foursquare.com/v/aquarium-restaurant/4aede92ff964a52023d021e3
+//
 //////////////////////////////////////////////////////////////
 function Model() { }
 
-// make 'locations' a static variable
 Model.locations = [{
          "name1" : "South Shore Harbor Resort",
          "url" : "http://www.sshr.com",
@@ -28,7 +32,7 @@ Model.locations = [{
          "lat" : "29.545310",
          "lon" : "-95.065914",
          "idx" : 0,
-         "yelpid" : "http://www.yelp.com/biz/space-center-houston-houston-4",
+         "foursquareid" : "4b763eb5f964a520fe442ee3",
          "marker" : ""
      }, {
          "name1" : "Armand Bayou Nature Center",
@@ -37,7 +41,7 @@ Model.locations = [{
          "lat" : "29.593904",
          "lon" : "-95.074970",
          "idx" : 1,
-         "yelpid" : "http://www.yelp.com/biz/space-center-houston-houston-4",
+         "foursquareid" : "4afda3baf964a520622922e3",
          "marker" : ""
      }, {
          "name1" : "Space Center Houston",
@@ -46,16 +50,16 @@ Model.locations = [{
          "lat" : "29.550402",
          "lon" : "-95.097061",
          "idx" : 2,
-         "yelpid" : "http://www.yelp.com/biz/space-center-houston-houston-4",
+         "foursquareid" : "51e8625e498e92c3bd720b6d",
          "marker" : ""
      }, {
-         "name1" : "Kemah Boardwalk",
-         "url" : "http://www.KemahBoardwalk.com",
-         "category" : "entertainment",
+         "name1" : "Aquarium Restaurant",
+         "url" : "http://www.aquariumrestaurants.com/",
+         "category" : "food",
          "lat" : "29.547349",
          "lon" : "-95.018525",
          "idx" : 3,
-         "yelpid" : "http://www.yelp.com/biz/space-center-houston-houston-4",
+         "foursquareid" : "4aede92ff964a52023d021e3",
          "marker" : ""
      }, {
          "name1" : "Tookies Burgers",
@@ -64,7 +68,7 @@ Model.locations = [{
          "lat" : "29.563658",
          "lon" : "-95.025204",
          "idx" : 4,
-         "yelpid" : "http://www.yelp.com/biz/space-center-houston-houston-4",
+         "foursquareid" : "4dfa9f3f18386e743d95919b",
          "marker" : ""
      }, {
          "name1" : "Main Event Entertainment",
@@ -73,7 +77,7 @@ Model.locations = [{
          "lat" : "29.524015",
          "lon" : "-95.122994",
          "idx" : 5,
-         "yelpid" : "http://www.yelp.com/biz/space-center-houston-houston-4",
+         "foursquareid" : "4b6b4c20f964a52001ff2be3",
          "marker" : ""
      }
   ]; // locations
@@ -119,6 +123,7 @@ var viewModel = function (locations) {
 
   // this function will animate the marker that corresponds with the item (from the filter search) that was pressed
   self.selectMarker = function (item) {
+	console.log("viewmodel triggermarker " + item.idx);
       mapAppObj.triggerMarker(item.idx);
   }
 

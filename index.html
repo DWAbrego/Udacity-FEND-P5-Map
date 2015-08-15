@@ -1,9 +1,7 @@
 <!--
 TODO
-- would like to consolidate triggermarker at l 82, 110 in file maps.js (repeated code for select list onclick trigger, and pin onclick trigger)
-	viewmodel l.125  calls selectMarker
-
-- clicking from select list ends up calling trigger 2x, see console log
+fix foursquare, ajax is working, but how to make it do more than console.log
+disconnect from internet, show error messages in html
 -->
 
 
@@ -19,7 +17,7 @@ TODO
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-    <script src="http://maps.googleapis.com/maps/api/js"></script>
+    <!-- <script src="http://maps.googleapis.com/maps/api/js"></script> -->
 
 
   </head>
@@ -36,7 +34,7 @@ TODO
         <div class="row">
           <div class="col-md-4">
             <div class="well">
-              Search Results
+              Search Results <div data-bind="text: loadMessage1"><b>loading...</b></div>
                 <ul data-bind="foreach: SearchResults1" id="searchResults">
                   <li>
                     <button data-bind="text: name1, click: $parent.selectMarker"> </button>
@@ -47,7 +45,7 @@ TODO
 
           <div class="col-md-8">
             <div class="well" id="mapWell">
-              <div id="googleMap"></div>
+              <div id="googleMap"><b>loading...</b></div>
             </div>
           </div>
         </div>
@@ -58,6 +56,7 @@ TODO
 	<script type='text/javascript' src='js/jquery.min.js'></script>
     <script src="js/bootstrap.min.js"></script>
 	<script type='text/javascript' src='js/knockout.js'></script>
+    <script src="js/model.js"></script>
     <script src="js/maps.js"></script>
     <script src="js/viewmodel.js"></script>
 

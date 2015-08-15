@@ -8,8 +8,9 @@ button {
   border-style: none;
   margin:5px;
   min-width: 145px;
-  background-color: #337ab7;
-  color: whitesmoke;
+  /* background-color: #337ab7; */
+  background-color: #f5f5f5;
+  /* color: whitesmoke; */
 }
 
 ul {

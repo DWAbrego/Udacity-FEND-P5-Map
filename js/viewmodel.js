@@ -13,7 +13,7 @@
 //
 // This class is used to create the model for the MVVC pattern.
 // It will be solely location data, and 'locations' will be used
-// as a static variable.  
+// as a static variable.
 //
 // static variable discussion:
 // http://stackoverflow.com/questions/1535631/static-variables-in-javascript?lq=1
@@ -23,9 +23,9 @@
 // https://foursquare.com/v/aquarium-restaurant/4aede92ff964a52023d021e3
 //
 //////////////////////////////////////////////////////////////
-function Model() { }
+function Model() {
 
-Model.locations = [{
+    this.locations = [{
          "name1" : "South Shore Harbor Resort",
          "url" : "http://www.sshr.com",
          "category" : "hotel",
@@ -81,6 +81,19 @@ Model.locations = [{
          "marker" : ""
      }
   ]; // locations
+}
+
+//////////////////////////////////////////////////////////////
+//
+//
+//
+//////////////////////////////////////////////////////////////
+
+  // store reference to our model
+  var model = new Model();
+
+  // create a map wrapper object to perform operations on our map
+  var mapAppObj = new MapAppObj();
 
 
 //////////////////////////////////////////////////////////////
@@ -98,32 +111,26 @@ Model.locations = [{
 //    values in a text box
 //
 //////////////////////////////////////////////////////////////
-var viewModel = function (locations) {
+var viewModel = function (model) {
   var self = this;
-
-  // store reference to our model
-  //var model = new Model();
-
-  // create a map wrapper object to perform operations on our map
-  var mapAppObj = new MapAppObj(locations);
-
+//console.log(model.locations);
   // initialize map on window load event
-  google.maps.event.addDomListener(window, 'load', mapAppObj.initializeMap());
+  google.maps.event.addDomListener(window, 'load', mapAppObj.initializeMap(model));
 
   // this is the filter text box
   self.filterText = ko.observable("");
 
   // take list of locations (which is a javascript array of objects) and make it a ko observable
-  self.placesArrayObs = ko.observableArray(locations);
+  self.placesArrayObs = ko.observableArray(model.locations);
 
-  // this is simply a convenience function to reset the map
+  // this is simply a convenience function to reset the map, reset button
   self.initializeMapVm = function () {
-    mapAppObj.initializeMap();
+    mapAppObj.initializeMap(model);
   }
 
   // this function will animate the marker that corresponds with the item (from the filter search) that was pressed
   self.selectMarker = function (item) {
-	console.log("viewmodel triggermarker " + item.idx);
+	//console.log("viewmodel triggermarker " + item.idx);
       mapAppObj.triggerMarker(item.idx);
   }
 
@@ -140,8 +147,8 @@ var viewModel = function (locations) {
   self.SearchResults1 = ko.computed(function () {
 
     // first hide all markers (markers stored in map.js)
-    for (i1 = 0; i1 < locations.length; i1++) {
-      locations[i1].marker.setVisible(false);
+    for (i1 = 0; i1 < model.locations.length; i1++) {
+      model.locations[i1].marker.setVisible(false);
     }
 
     return ko.utils.arrayFilter(self.placesArrayObs(), function (item) {
@@ -151,9 +158,9 @@ var viewModel = function (locations) {
       var filter = self.filterText().toLowerCase();
 
       // only show markers that have a name that matches the filter text box
-      for (i1 = 0; i1 < locations.length; i1++) {
-        if (self.stringStartsWith(locations[i1].name1.toLowerCase(), filter)) {
-          locations[i1].marker.setVisible(true);
+      for (i1 = 0; i1 < model.locations.length; i1++) {
+        if (self.stringStartsWith(model.locations[i1].name1.toLowerCase(), filter)) {
+          model.locations[i1].marker.setVisible(true);
         }
       }
 
@@ -168,5 +175,6 @@ var viewModel = function (locations) {
 // Now apply knockout bindings here
 //
 //////////////////////////////////////////////////////////////
-ko.applyBindings(new viewModel(Model.locations));
+//console.log(model);console.log(model.locations);
+ko.applyBindings(new viewModel(model));
 

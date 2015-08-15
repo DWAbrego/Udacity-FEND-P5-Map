@@ -18,8 +18,8 @@
 // constructor will create and store the actual google map api object.
 //
 //////////////////////////////////////////////////////////////
-var MapAppObj = function (locationsx) {
-  this.locations = locationsx;
+var MapAppObj = function () {
+
   this.myCenter = new google.maps.LatLng(29.55464378, -95.06847382);
 
   var mapProp = {
@@ -41,7 +41,7 @@ var MapAppObj = function (locationsx) {
 // respective click events to the map and markers.
 //
 //////////////////////////////////////////////////////////////
-MapAppObj.prototype.initializeMap = function() {
+MapAppObj.prototype.initializeMap = function(model) {
   var self=this;
 
   //var infowindow = new google.maps.InfoWindow;
@@ -49,10 +49,10 @@ MapAppObj.prototype.initializeMap = function() {
   var i;
 
   // create the map markers for each location
-  for (i = 0; i < self.locations.length; i++) {
+  for (i = 0; i < model.locations.length; i++) {
       marker = new google.maps.Marker({
           animation : google.maps.Animation.DROP,
-          position : new google.maps.LatLng(self.locations[i].lat, self.locations[i].lon),
+          position : new google.maps.LatLng(model.locations[i].lat, model.locations[i].lon),
           map : this.map
       });
 
@@ -77,18 +77,23 @@ MapAppObj.prototype.initializeMap = function() {
       // on the marker's infowindow, create a button with a link to a popupwindow
       google.maps.event.addListener(marker, 'click', (function (marker, i) {
           return function () {
+
             var iws = "";
-            clickStr = "window.open('" + self.locations[i].url + "' , '_blank', 'width=400, height=400');";
-            iws += "<button onclick=\"" + clickStr + "\"> " + self.locations[i].name1 + "</button> ";
-			loadFourSquare(self.locations[i].foursquareid);
+            clickStr = "window.open('" + model.locations[i].url + "' , '_blank', 'width=400, height=400');";
+            iws += "<button onclick=\"" + clickStr + "\"> " + model.locations[i].name1 + "</button> ";
+			loadFourSquare(model.locations[i].foursquareid);
             self.infowindow.setContent(iws);
             self.infowindow.open(this.map, marker);
+
+
+			//self.triggerMarker(i);
+
           }
       })(marker, i));
 
 
       // save markers reference so we can manipulate them later
-      self.locations[i].marker = marker;
+      model.locations[i].marker = marker;
   }
 } // initializeMap()
 
@@ -103,19 +108,19 @@ MapAppObj.prototype.initializeMap = function() {
 //
 //////////////////////////////////////////////////////////////
 MapAppObj.prototype.triggerMarker = function(idx) {
-	loc = new google.maps.LatLng(this.locations[idx].lat, this.locations[idx].lon);
+	loc = new google.maps.LatLng(model.locations[idx].lat, model.locations[idx].lon);
 
 	// center the map at the lat/long of this marker
 	this.map.setCenter(loc);
 
-	loadFourSquare(this.locations[idx].foursquareid);
+	loadFourSquare(model.locations[idx].foursquareid);
 
 	// now trigger the marker as if clicked
-	google.maps.event.trigger(this.locations[idx].marker, 'click');
+	google.maps.event.trigger(model.locations[idx].marker, 'click');
 
 	// and reset the info window
     this.infowindow.setContent("woot" + idx);
-    this.infowindow.open(this.map, this.locations[idx].marker);
+    this.infowindow.open(this.map, model.locations[idx].marker);
 
 } // triggerMarker()
 
@@ -144,7 +149,7 @@ MapAppObj.prototype.triggerMarker = function(idx) {
 
 	var response =	$.getJSON(
 		url,
-		function(data) { 
+		function(data) {
 		   clearTimeout(wTimeout);
 	});
 

@@ -1,11 +1,7 @@
+
 <!--
-TODO
-fix foursquare, ajax is working, but how to make it do more than console.log
-disconnect from internet, show error messages in html
-
-read on mvvm
+TODO - status message shows 'object HTMLSpanElement'
 -->
-
 
 
 <!DOCTYPE html>
@@ -15,45 +11,57 @@ read on mvvm
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Project 5 </title>
+    <title>Project 5</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-    <!-- <script src="http://maps.googleapis.com/maps/api/js"></script> -->
-
 
   </head>
   <body>
 
+
     <div class="container-fluid" style="margin:10px;">
 
       <div class="row">
-        <div class="well">
-        Search <input type="search" data-bind="value: filterText, textInput: filterText, valueUpdate: 'keyup'" />
-          <button data-bind="click: initializeMapVm">	Reset Map</button>
-        </div>
 
-        <div class="row">
-          <div class="col-md-4">
-            <div class="well">
-              Search Results <div data-bind="text: loadMessage1"><b>loading...</b></div>
-                <ul data-bind="foreach: SearchResults1" id="searchResults">
-                  <li>
-                    <button data-bind="text: name1, click: $parent.selectMarker"> </button>
-                  </li>
-                </ul>
-            </div>
+        <div class="col-md-3">
+          <div  class="well">
+            <input placeholder="Search" type="search" data-bind="value: filterText, textInput: filterText, valueUpdate: 'keyup'" />
+            <!-- <button data-bind="click: initializeMapVm">	Reset Map</button> -->
           </div>
-
-          <div class="col-md-8">
-            <div class="well" id="mapWell">
-              <div id="googleMap"><b>loading...</b></div>
-            </div>
+        </div>
+        <div class="col-md-9">
+          <div  class="well">
+            <span data-bind="text: statusMessage1" id="statusMessage1"></span>
           </div>
         </div>
 
       </div>
+
+      <div class="row">
+        <div class="col-md-3">
+          <div class="well">
+            <div>
+               <ul data-bind="foreach: SearchResults1" id="searchResults" style="margin:0; padding:0";>
+                <li>
+                  <button data-bind="text: name1, click: $parent.selectMarker">loading... </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-9">
+          <div class="well">
+              <div id="mapWell">
+                <div id="googleMap">loading...</div>
+              </div>
+          </div>
+        </div>
+      </div>
+
     </div>
+
 
 	<script type='text/javascript' src='js/jquery.min.js'></script>
     <script src="js/bootstrap.min.js"></script>
@@ -61,6 +69,7 @@ read on mvvm
     <script src="js/model.js"></script>
     <script src="js/maps.js"></script>
     <script src="js/viewmodel.js"></script>
+    <script src="js/app.js"></script>
 
   </body>
 </html>

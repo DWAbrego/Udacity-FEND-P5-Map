@@ -7,7 +7,7 @@
 button {
   border-style: none;
   margin:5px;
-  min-width: 145px;
+  /* min-width: 145px; */
   /* background-color: #337ab7; */
   background-color: #f5f5f5;
   /* color: whitesmoke; */
@@ -17,14 +17,21 @@ ul {
     list-style-type: none;
 }
 
+/* div surrounding the google map */
 #mapWell {
   height:680px;
 }
 
+/* this is the <ul></ul> containing search results */
 #searchResults{
   padding-left:4px;
 }
 
+/* resize the image appearing in info window above google map marker */
+.resize {
+  width:300px;
+  height: auto;
+}
 /********************************************************************
  * Mobile
  ********************************************************************/
@@ -32,6 +39,14 @@ ul {
   #mapWell {
     height:342px;
   }
+button {
+  width: 200px;
+}
+
+li {
+    display: inline;
+}
+
 }
 
 /********************************************************************
@@ -41,6 +56,14 @@ ul {
   #mapWell {
     height:695px;
   }
+button {
+  width: 200px;
+}
+
+li {
+    display: inline;
+}
+
 }
 
 /********************************************************************
@@ -50,6 +73,18 @@ ul {
   #mapWell {
     height:650px;
   }
+
+button {
+  width: 200px;
 }
+
+li {
+    display: inline;
+}
+
+}
+
+
+
 
 

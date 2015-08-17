@@ -9,19 +9,16 @@
 //
 // Model():
 //
-// This class is used to create the model for the MVVC pattern.
-// It will be solely location data, and 'locations' will be used
-// as a static variable.
-//
-// static variable discussion:
-// http://stackoverflow.com/questions/1535631/static-variables-in-javascript?lq=1
-//
 // Found 'foursquareid' by looking up the business in foursquare, and
 // the id is the last part of the URL e.g.
 // https://foursquare.com/v/aquarium-restaurant/4aede92ff964a52023d021e3
 //
+// If there was a pretty url with no id, then I found the id by using the Foursquare
+// api explorer here (venue search,and substitute where ll = long/lat)
+// https://developer.foursquare.com/docs/explore#req=venues/search%3Fll%3D29.547390,+-95.018434
+//
 //////////////////////////////////////////////////////////////
-function Model() {
+var Model = function() {
 
     this.locations = [{
          "name1" : "South Shore Harbor Resort",
@@ -69,14 +66,48 @@ function Model() {
          "foursquareid" : "4dfa9f3f18386e743d95919b",
          "marker" : ""
      }, {
+         "name1" : "Bubba Gump Shrimp Co",
+         "url" : "http://www.bubbagump.com/",
+         "category" : "food",
+         "lat" : "29.548099",
+         "lon" : "-95.018519",
+         "idx" : 5,
+         "foursquareid" : "4b3d7501f964a520749425e3",
+         "marker" : ""
+     }, {
          "name1" : "Main Event Entertainment",
          "url" : "http://www.mainevent.com",
          "category" : "entertainment",
          "lat" : "29.524015",
          "lon" : "-95.122994",
-         "idx" : 5,
+         "idx" : 6,
          "foursquareid" : "4b6b4c20f964a52001ff2be3",
          "marker" : ""
      }
   ]; // locations
+
+/* Kemah AMusement Park
+ * 4efb80b09adf02fe695a577e
+ */
+
+  this.getLocations = function() {
+	return this.locations;
+  };
+
+  this.getOneLocation = function(i1) {
+	return this.locations[i1];
+  };
+
+  this.setLocationsMarker = function(i1, marker) {
+	this.locations[i1].marker = marker;
+  };
+
 }
+
+
+
+
+
+
+
+

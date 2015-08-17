@@ -1,69 +1,57 @@
 /////////////////////////////////////////////////////////////
 //
 // maps.js:
-//
-// This file includes wrapper functions for google maps,
-// and it encapsulates these functions into a single map object
-//
-/////////////////////////////////////////////////////////////
-
-
-
 //////////////////////////////////////////////////////////////
-//
-// MapAppObj():
-//
-// Map object constructor.  Takes an array of location objects
-// as a parameter and stores them for initializeMap().  This
-// constructor will create and store the actual google map api object.
-//
-//////////////////////////////////////////////////////////////
-var MapAppObj = function () {
-	$.getScript("http://maps.google.com/maps/api/js?key=AIzaSyCK6IbTDbfKibr9OE2CUuzyKprrSAJLqbE&callback=initializeMap")
-	.done(function (script, textStatus) {            
+
+var MapVmAppObj = function (model) {
+  var self = this;
+  self.statusMessage1 = ko.observable("woot");
+  self.str1 = "self.str1 xxx";
+
+  self.initializeMapCBXX = function () {
+	//mapAppObj.initializeMap(model);
+	console.log('initializeMapCBXX');
+  }
+
+  self.mapLocations = model.getLocations();
+
+  self.loadGoogleAPI = function () {
+	$.getScript("http://maps.google.com/maps/api/js?key=AIzaSyCK6IbTDbfKibr9OE2CUuzyKprrSAJLqbE&callback=initializeMapCB")
+	.done(function (script, textStatus) {
 		console.log("Google map script loaded successfully");
+		self.statusMessage1("Google map script loaded successfully");
 	})
 	.fail(function (jqxhr, settings, ex) {
 		console.log("Could not load Google Map script: " + jqxhr);
+		self.statusMessage1("Could not load Google Map script");
 	});
-}  // MapAppObj
+  }  // loadGoogleAPI
 
+} // MapVmAppObj()
 
+/*
+maybe in loadGoogleAPI, put up map loading animation, then in CB close the animation
 
-
-//////////////////////////////////////////////////////////////
-//
-// 
-//
-//////////////////////////////////////////////////////////////
-
-function initializeMap() {
-	mapAppObj.initializeMap(model);
-	console.log('init1');
-}
-
-
-    
-    
+*/
 
 //////////////////////////////////////////////////////////////
 //
 // initializeMap():
 //
-// This function will create a google map info window, markers, and attach
-// respective click events to the map and markers.
+//////////////////////////////////////////////////////////////
+function initializeMapCB() {
+	//mapAppObj.initializeMap(model);
+	console.log('initializeMapCB');
+}
+//////////////////////////////////////////////////////////////
+//
+// initializeMap():
 //
 //////////////////////////////////////////////////////////////
-MapAppObj.prototype.initializeMap = function(model) {
+MapVmAppObj.prototype.initializeMap = function() {
   var self=this;
 
-
-
-
-
-
-
-  this.myCenter = new google.maps.LatLng(29.55464378, -95.06847382);   
+  this.myCenter = new google.maps.LatLng(29.55464378, -95.06847382);
   var mapProp = {
       center : this.myCenter,
       zoom : 12,
@@ -73,29 +61,16 @@ MapAppObj.prototype.initializeMap = function(model) {
   this.map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
   this.infowindow = new google.maps.InfoWindow;
 
-  this.str1 = "123";
-  
-  
-  
-  
-  
-  
-  
-  
-  //var infowindow = new google.maps.InfoWindow;
-
   var i;
 
-  // create the map markers for each location
-  for (i = 0; i < model.locations.length; i++) {
+  var locationsTemp = self.mapLocations;
+  for (i = 0; i < locationsTemp.length; i++) {
       marker = new google.maps.Marker({
           animation : google.maps.Animation.DROP,
-          position : new google.maps.LatLng(model.locations[i].lat, model.locations[i].lon),
+          position : new google.maps.LatLng(self.mapLocations[i].lat, self.mapLocations[i].lon),
           map : this.map
       });
 
-      // this adds live marker animation when clicked, make it timeout after a few bounces
-      // https://developers.google.com/maps/documentation/javascript/examples/marker-animations
       google.maps.event.addListener(marker, 'click', (function (marker, i) {
         return function () {
           if (marker.getAnimation() != null) {
@@ -103,83 +78,56 @@ MapAppObj.prototype.initializeMap = function(model) {
           } else {
             marker.setAnimation(google.maps.Animation.BOUNCE);
 
-            // don't let marker bounce indefinitely
             setTimeout(function () {
                 marker.setAnimation(null);
             }, 2800);
           }
 
-          loc = new google.maps.LatLng(model.locations[i].lat, model.locations[i].lon);
+          //loc = new google.maps.LatLng(self.mapLocations[i].lat, self.mapLocations[i].lon);
 
-          // center the map at the lat/long of this marker
-          //self.map.setCenter(loc);
-
-          self.loadFourSquare(model.locations[i].foursquareid);
-          //self.loadFourSquare(model);
-
-          // now trigger the marker as if clicked
-          //google.maps.event.trigger(model.locations[idx].marker, 'click');
-
-          // and reset the info window
-          self.infowindow.setContent("wqootx");
-          self.infowindow.open(self.map, marker);
-
+          self.loadFourSquare(self.mapLocations[i].foursquareid, marker);
+          //self.infowindow.setContent(self.str1);
+          //self.infowindow.open(self.map, marker);
 
         }
       })(marker, i));
 
-      // save markers reference so we can manipulate them later
-      model.locations[i].marker = marker;
+      model.setLocationsMarker(i, marker);
+
+	  //self.marker = marker;	
   }
 } // initializeMap()
-
-
-
-
-
-
-    
-    
-    
-    
-//////////////////////////////////////////////////////////////
-//
-// triggerMarker():
-//
-// This function is used to trigger the click event of a single
-// map marker.  It will be bound by knockout framework to the
-// select list in the html page (the list that is produced when a
-// filter is applied).
-//
-//////////////////////////////////////////////////////////////
-MapAppObj.prototype.triggerMarker = function(idx) {
-	// now trigger the marker as if clicked
-	google.maps.event.trigger(model.locations[idx].marker, 'click');
-} // triggerMarker()
-
-
 
 //////////////////////////////////////////////////////////////
 //
 // loadFourSquare():
 //
-// use this to see returned json https://jsonformatter.curiousconcept.com/
+//
+// https://api.foursquare.com/v2/venues/4b6b4c20f964a52001ff2be3?client_id=MXDSBUBGPVFDLPZDUR1RPY0QNSP2YZ0X0JPAJNXSZ23CG5CU&client_secret=30515VPS1GZBJJ1K134WBAA4ZGCUCZXWEEMLVJFTCH5C2FCG&v=20130815"
 //
 //////////////////////////////////////////////////////////////
-MapAppObj.prototype.loadFourSquare = function(foursquareid) {
+MapVmAppObj.prototype.loadFourSquare = function(foursquareid, marker1) {
   var self=this;
+
+  self.vname = "";
+  self.vcount = "";
+  self.vHereNow = "";
+  self.vBanner = "";
+  self.marker = marker1;
 
   var url = "https://api.foursquare.com/v2/venues/" + foursquareid;
   url += "?client_id=MXDSBUBGPVFDLPZDUR1RPY0QNSP2YZ0X0JPAJNXSZ23CG5CU";
   url += "&client_secret=30515VPS1GZBJJ1K134WBAA4ZGCUCZXWEEMLVJFTCH5C2FCG";
   url += "&v=20130815";  // version parameter
 
+  // uncomment this to get url for ajax request (in case you need to see the json)
+  //console.log(url);
+
   // set timeout warning in case foursquare is down
   var wTimeout = setTimeout(function() {
+            self.statusMessage1("4^2 failed to get foursquare resources");
     console.log("failed to get foursquare resources");
   }, 8000);
-
-
 
   $.getJSON(
       url,
@@ -187,33 +135,38 @@ MapAppObj.prototype.loadFourSquare = function(foursquareid) {
          clearTimeout(wTimeout);
          //console.log(data.response.venue.name);
       }).done(function(data) {
-        console.log( "gtJSON=" + data.response.venue.name );
-        // data.response ? data.response : "";
-        //self.str1 = data.response.venue.name;
+        //console.log( "gtJSON=" + data.response.venue.name );
+        //console.log(data.response.venue.description); //hereNow.count
+        self.statusMessage1("4^2 loaded successfully");
+
+        self.vname = "<h3>" + data.response.venue.name  + "</h3>";
+        self.vcount = "likes:" + data.response.venue.likes.count;
+        self.vHereNow = "<br> here now: " + data.response.venue.hereNow.count;
+        self.vBanner = "<br>No banner provided";
+
+        if (!(typeof data.response.venue.page === 'undefined')) {
+          if (!(typeof data.response.venue.page.pageInfo === 'undefined')) {
+            if (!(typeof data.response.venue.page.pageInfo.banner === 'undefined')) {
+                //console.log(data.response.venue.page.pageInfo.banner);
+                self.vBanner = "<br><div><img class='resize' src='" + data.response.venue.page.pageInfo.banner + "'></div>";
+             }
+          }
+        }
+
+		// https://foursquare.com/about/logos
+        self.str1 =  "<img src='https://playfoursquare.s3.amazonaws.com/press/2014/foursquare-icon-16x16.png'> <br>";
+		self.str1 += self.vname  + self.vcount + self.vHereNow + self.vBanner;
+
+        self.infowindow.setContent(self.str1);
+        self.infowindow.open(self.map, self.marker);
+
       })
       .fail(function() {
-        console.log( "error" );
+        console.log( "loadFourSquare error" );
+        self.statusMessage1("4^2 loaded error");
       })
       .always(function(data) {
         //console.log( "complete");
     });
+} // loadFourSquare()
 
-}
-
-
-/*
-
-http://stackoverflow.com/questions/1455870/jquery-wait-for-function-to-complete-to-continue-processing
-7
-down vote
-Ajax already gives you a callback, you are supposed to use it:
-
-function dostuff( data ) {
-    for(var i = 0; i < data.length; i++) {
-        // Do stuff with data
-    }
-};
-$(document).ready( function() {
-    $.getJSON( "/controller/method/", null, dostuff );
-});
-*/

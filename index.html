@@ -16,6 +16,55 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
+      <script>
+     function loadGoogleMapsAPI() {
+       var script = document.createElement('script');
+       script.type = 'text/javascript';
+       script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&callback=initializeApp';
+       document.body.appendChild(script);
+     }
+
+      var waitForMapsCounter = 0;
+
+      function checkForMapsObjsLoaded(time) {
+          var self = this;
+
+          waitForMapsCounter++;
+
+          if (typeof google === 'object' && typeof google.maps === 'object')  {
+              console.log("wait yes");
+              return;
+          }
+          else {
+              if(waitForMapsCounter > 10)
+              {
+                  console.log("Google maps object taking too long to load, aborting");
+                  alert("Google maps object taking too long to load, aborting");
+                  return;
+              }
+              else {
+                  console.log("Waiting to load google maps object");
+
+                  setTimeout(function() {
+                      console.log("wait no" + waitForMapsCounter);
+                      checkForMapsObjsLoaded(time);
+                  }, time);
+              }
+          }
+      } // waitForMapsObjsToLoad
+
+
+      checkForMapsObjsLoaded(200);
+
+
+
+     window.onload = loadGoogleMapsAPI;
+
+
+     </script>
+
+
+
   </head>
   <body>
 
@@ -23,40 +72,40 @@
     <div class="container-fluid" style="margin:10px;">
 
 	  <div class="row">
-	  
+
         <div class="col-md-3">
 		  <div id="vm-list">
-			   <div  class="wellx">		   
+			   <div  class="wellx">
 				 <input placeholder="Search"  type="search" data-bind="value: filterText, textInput: filterText, valueUpdate: 'keyup'" />
-				 <!-- <button data-bind="click: initializeMapVm">	Reset Map</button> -->		  
+				 <!-- <button data-bind="click: initializeMapVm">	Reset Map</button> -->
 			   </div>
-			   
-			   <div  class="wellx"> 		   
+
+			   <div  class="wellx">
 				 <ul data-bind="foreach: SearchResults1" id="searchResults" style="margin:0; padding:0";>
 				   <li>
 					 <button data-bind="text: name1, click: $parent.selectMarker">loading list... </button>
 				   </li>
-				 </ul>		   		   
-			   </div>		   
+				 </ul>
+			   </div>
 		  </div>
-        </div>	 
-		
+        </div>
+
         <div class="col-md-9">
 		  <div id="vm-maps">
 		   <div  class="wellx">
-             <span data-bind="text: statusMessage1" id="statusMessage1"></span>		   
+             <span data-bind="html: statusMessage1" id="statusMessage1"></span>
 		   </div>
 		   <div  class="wellx">
 			  <div id="mapWell">
 				<div id="googleMap">loading map...</div>
-			  </div>		   
+			  </div>
 		   </div>
-		  </div> 
-        </div>	
+		  </div>
+        </div>
 
-		
-	  </div> <!-- row -->	  
-		 
+
+	  </div> <!-- row -->
+
 
     </div> <!-- container-fluid -->
 
@@ -68,6 +117,10 @@
     <script src="js/maps.js"></script>
     <script src="js/viewmodel.js"></script>
     <script src="js/app.js"></script>
+
+
+
+
 
   </body>
 </html>

@@ -5,24 +5,29 @@
 
 var MapVmAppObj = function (model) {
   var self = this;
-  self.statusMessage1 = ko.observable("woot");
+  self.statusMessage1 = ko.observable("");
   //self.str1 = "self.str1 xxx";
 
-  self.mapLocations = model.getLocations();
+//  self.mapLocations = model.getLocations();
+  self.model = model;
 
+/*
   self.loadGoogleAPI = function () {
 	console.log("begin load google api");
 	$.when($.getScript("http://maps.google.com/maps/api/js?key=AIzaSyCK6IbTDbfKibr9OE2CUuzyKprrSAJLqbE&callback=initializeMapCB"))
 		.then(function (data, textStatus, jqXHR) {
 		console.log("Google maps api loaded successfully");
-		
-		self.statusMessage1("Google maps api loaded successfully");		
+
+		self.statusMessage1("Google maps api loaded successfully");
 		})
 		.fail(function (jqxhr, settings, ex) {
 			console.log("Could not load Google Maps api " + jqxhr);
 			self.statusMessage1("Could not load Google Maps api");
 		});
-  }  // loadGoogleAPI  
+  }  // loadGoogleAPI
+
+  */
+
 } // MapVmAppObj()
 
 
@@ -57,24 +62,25 @@ function initializeMapCB() {
 MapVmAppObj.prototype.waitForMapsObj = function(time) {
 	var self = this;
 
-	MapVmAppObj.waitForMapsCounter++; 
+	MapVmAppObj.waitForMapsCounter++;
 
-    if (typeof google === 'object' && typeof google.maps === 'object')  { 
-		console.log("wait yes"); 
+    if (typeof google === 'object' && typeof google.maps === 'object')  {
+		console.log("wait yes");
 		self.createMap();
-		self.setMarkers(); 
+		self.setMarkers();
+        self.statusMessage1 ("google maps loaded");
 		return;
     }
     else {
 		if(MapVmAppObj.waitForMapsCounter > 10)
 		{
-			self.statusMessage1("Google maps object taking too long to load, aborting");				
+			self.statusMessage1("<h1>Google maps object taking too long to load, aborting</h1>");
 			return;
 		}
 		else {
-			self.statusMessage1("Waiting to load google maps object");	
-		    setTimeout(function() { 
-				console.log("wait no" + MapVmAppObj.waitForMapsCounter);		
+			self.statusMessage1("Waiting to load google maps object");
+		    setTimeout(function() {
+				console.log("wait no" + MapVmAppObj.waitForMapsCounter);
 		        self.waitForMapsObj(time);
 		    }, time);
 		}
@@ -91,11 +97,12 @@ MapVmAppObj.prototype.waitForMapsObj = function(time) {
 //////////////////////////////////////////////////////////////
 MapVmAppObj.prototype.initializeMap = function() {
 	var self = this;
-	
-	self.loadGoogleAPI();
-	self.waitForMapsObj(200);
-		//self.createMap();
-		//self.setMarkers(); 
+console.log("initializeMap MapVmAppObj");
+	//self.loadGoogleAPI();
+	//self.waitForMapsObj(200);
+	self.createMap();
+	self.setMarkers();
+
 }
 
 
@@ -107,15 +114,15 @@ MapVmAppObj.prototype.initializeMap = function() {
 MapVmAppObj.prototype.createMap = function() {
   var self=this;
 
-  this.myCenter = new google.maps.LatLng(29.55464378, -95.06847382);
+  self.myCenter = new google.maps.LatLng(29.55464378, -95.06847382);
   var mapProp = {
       center : this.myCenter,
       zoom : 12,
       mapTypeId : google.maps.MapTypeId.ROADMAP
   };
 
-  this.map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-  this.infowindow = new google.maps.InfoWindow;
+  self.map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+  self.infowindow = new google.maps.InfoWindow;
 }
 
 
@@ -130,13 +137,19 @@ MapVmAppObj.prototype.createMap = function() {
 MapVmAppObj.prototype.setMarkers = function() {
   var self=this;
   var i;
-  var locationsTemp = self.mapLocations;
+  var locationsTemp = self.model.getLocations();
+
+  //console.log(locationsTemp[0]);
+
   for (i = 0; i < locationsTemp.length; i++) {
+    //console.log(locationsTemp);
       marker = new google.maps.Marker({
           animation : google.maps.Animation.DROP,
-          position : new google.maps.LatLng(self.mapLocations[i].lat, self.mapLocations[i].lon),
-          map : this.map
+          position : new google.maps.LatLng(locationsTemp[i].lat, locationsTemp[i].lon),
+          map : self.map
       });
+
+//console.log(marker.position);
 
       google.maps.event.addListener(marker, 'click', (function (marker, i) {
         return function () {
@@ -149,19 +162,13 @@ MapVmAppObj.prototype.setMarkers = function() {
                 marker.setAnimation(null);
             }, 2800);
           }
-
-          //loc = new google.maps.LatLng(self.mapLocations[i].lat, self.mapLocations[i].lon);
-
-          self.loadFourSquare(self.mapLocations[i].foursquareid, marker);
-          //self.infowindow.setContent(self.str1);
-          //self.infowindow.open(self.map, marker);
-
+          self.loadFourSquare(locationsTemp[i].foursquareid, marker);
         }
       })(marker, i));
 
-      model.setLocationsMarker(i, marker);
+      self.model.setLocationsMarker(i, marker);
 
-	  //self.marker = marker;	
+	  //self.marker = marker;
   }
 } // initializeMap()
 
@@ -192,7 +199,7 @@ MapVmAppObj.prototype.loadFourSquare = function(foursquareid, marker1) {
 
   // set timeout warning in case foursquare is down
   var wTimeout = setTimeout(function() {
-    self.statusMessage1("4^2 failed to get foursquare resources");
+    self.statusMessage1("<h3> 4^2 failed to get foursquare resources </h3>"); 
     console.log("failed to get foursquare resources");
   }, 8000);
 

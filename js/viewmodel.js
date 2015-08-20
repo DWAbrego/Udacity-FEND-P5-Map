@@ -2,7 +2,7 @@
 //
 // viewmodel.js:
 //
-// This file will include the model and viewmodel.
+// This file will include theviewmodel.
 //
 //////////////////////////////////////////////////////////////
 

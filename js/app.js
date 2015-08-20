@@ -2,29 +2,20 @@
 var model = new Model();
 
 // create new google maps view model
-mapvm = new MapVmAppObj(model);
-
-// load google maps api asynch
-mapvm.loadGoogleAPI();
-
-
-// load map viewmodel last since it applies bindings to a specific element
-ko.applyBindings(mapvm, document.getElementById('statusMessage1'));
+var mapvm = new MapVmAppObj(model);
+mapvm.initializeMap(); // this also populates model markers
+ko.applyBindings(mapvm, document.getElementById('vm-maps'));
 
 
-// pause briefly so google maps loads, check for presence of 'google' object
-// before continuing
-if (window.google && google.maps) {
-}
-else {
-  setTimeout( function() {
-    // actual map and markers are loaded here
-    mapvm.initializeMap();
+//ko.applyBindings(new viewModel(model), document.getElementById('vm-list'));
 
-    // load viewmodel
-    ko.applyBindings(new viewModel(model));
+console.log(model.locations[0].marker);
 
-
+// view model
+if (!(window.google && google.maps)) {
+  setTimeout( function() {  
+		console.log(model.locations[0].marker);
+		ko.applyBindings(new viewModel(model), document.getElementById('vm-list'));
     }, 500
   );
 }

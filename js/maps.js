@@ -6,28 +6,30 @@
 var MapVmAppObj = function (model) {
   var self = this;
   self.statusMessage1 = ko.observable("woot");
-  self.str1 = "self.str1 xxx";
-
-  self.initializeMapCBXX = function () {
-	//mapAppObj.initializeMap(model);
-	console.log('initializeMapCBXX');
-  }
+  //self.str1 = "self.str1 xxx";
 
   self.mapLocations = model.getLocations();
 
   self.loadGoogleAPI = function () {
-	$.getScript("http://maps.google.com/maps/api/js?key=AIzaSyCK6IbTDbfKibr9OE2CUuzyKprrSAJLqbE&callback=initializeMapCB")
-	.done(function (script, textStatus) {
-		console.log("Google map script loaded successfully");
-		self.statusMessage1("Google map script loaded successfully");
-	})
-	.fail(function (jqxhr, settings, ex) {
-		console.log("Could not load Google Map script: " + jqxhr);
-		self.statusMessage1("Could not load Google Map script");
-	});
-  }  // loadGoogleAPI
-
+	console.log("begin load google api");
+	$.when($.getScript("http://maps.google.com/maps/api/js?key=AIzaSyCK6IbTDbfKibr9OE2CUuzyKprrSAJLqbE&callback=initializeMapCB"))
+		.then(function (data, textStatus, jqXHR) {
+		console.log("Google maps api loaded successfully");
+		
+		self.statusMessage1("Google maps api loaded successfully");		
+		})
+		.fail(function (jqxhr, settings, ex) {
+			console.log("Could not load Google Maps api " + jqxhr);
+			self.statusMessage1("Could not load Google Maps api");
+		});
+  }  // loadGoogleAPI  
 } // MapVmAppObj()
+
+
+MapVmAppObj.waitForMapsCounter = 0;
+
+
+
 
 /*
 maybe in loadGoogleAPI, put up map loading animation, then in CB close the animation
@@ -36,19 +38,73 @@ maybe in loadGoogleAPI, put up map loading animation, then in CB close the anima
 
 //////////////////////////////////////////////////////////////
 //
-// initializeMap():
+// initializeMapCB():  unused, don't remove or it crashes loadAPI
 //
 //////////////////////////////////////////////////////////////
 function initializeMapCB() {
 	//mapAppObj.initializeMap(model);
 	console.log('initializeMapCB');
 }
+
+
+
+
+
+//////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////
+MapVmAppObj.prototype.waitForMapsObj = function(time) {
+	var self = this;
+
+	MapVmAppObj.waitForMapsCounter++; 
+
+    if (typeof google === 'object' && typeof google.maps === 'object')  { 
+		console.log("wait yes"); 
+		self.createMap();
+		self.setMarkers(); 
+		return;
+    }
+    else {
+		if(MapVmAppObj.waitForMapsCounter > 10)
+		{
+			self.statusMessage1("Google maps object taking too long to load, aborting");				
+			return;
+		}
+		else {
+			self.statusMessage1("Waiting to load google maps object");	
+		    setTimeout(function() { 
+				console.log("wait no" + MapVmAppObj.waitForMapsCounter);		
+		        self.waitForMapsObj(time);
+		    }, time);
+		}
+    }
+}
+
+
+
+
 //////////////////////////////////////////////////////////////
 //
 // initializeMap():
 //
 //////////////////////////////////////////////////////////////
 MapVmAppObj.prototype.initializeMap = function() {
+	var self = this;
+	
+	self.loadGoogleAPI();
+	self.waitForMapsObj(200);
+		//self.createMap();
+		//self.setMarkers(); 
+}
+
+
+//////////////////////////////////////////////////////////////
+//
+// createMap():
+//
+//////////////////////////////////////////////////////////////
+MapVmAppObj.prototype.createMap = function() {
   var self=this;
 
   this.myCenter = new google.maps.LatLng(29.55464378, -95.06847382);
@@ -60,9 +116,20 @@ MapVmAppObj.prototype.initializeMap = function() {
 
   this.map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
   this.infowindow = new google.maps.InfoWindow;
+}
 
+
+
+
+
+//////////////////////////////////////////////////////////////
+//
+// setMarkers():
+//
+//////////////////////////////////////////////////////////////
+MapVmAppObj.prototype.setMarkers = function() {
+  var self=this;
   var i;
-
   var locationsTemp = self.mapLocations;
   for (i = 0; i < locationsTemp.length; i++) {
       marker = new google.maps.Marker({
@@ -125,7 +192,7 @@ MapVmAppObj.prototype.loadFourSquare = function(foursquareid, marker1) {
 
   // set timeout warning in case foursquare is down
   var wTimeout = setTimeout(function() {
-            self.statusMessage1("4^2 failed to get foursquare resources");
+    self.statusMessage1("4^2 failed to get foursquare resources");
     console.log("failed to get foursquare resources");
   }, 8000);
 

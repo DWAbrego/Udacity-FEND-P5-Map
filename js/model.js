@@ -23,7 +23,6 @@ var Model = function() {
     this.locations = [{
          "name1" : "South Shore Harbor Resort",
          "url" : "http://www.sshr.com",
-         "category" : "hotel",
          "lat" : "29.545310",
          "lon" : "-95.065914",
          "idx" : 0,
@@ -32,7 +31,6 @@ var Model = function() {
      }, {
          "name1" : "Armand Bayou Nature Center",
          "url" : "http://www.abnc.org",
-         "category" : "nature",
          "lat" : "29.593904",
          "lon" : "-95.074970",
          "idx" : 1,
@@ -41,7 +39,6 @@ var Model = function() {
      }, {
          "name1" : "Space Center Houston",
          "url" : "http://www.spacecenter.org",
-         "category" : "entertainment",
          "lat" : "29.550402",
          "lon" : "-95.097061",
          "idx" : 2,
@@ -50,7 +47,6 @@ var Model = function() {
      }, {
          "name1" : "Aquarium Restaurant",
          "url" : "http://www.aquariumrestaurants.com/",
-         "category" : "food",
          "lat" : "29.547349",
          "lon" : "-95.018525",
          "idx" : 3,
@@ -59,7 +55,6 @@ var Model = function() {
      }, {
          "name1" : "Tookies Burgers",
          "url" : "http://www.tookiesburgers.com",
-         "category" : "food",
          "lat" : "29.563658",
          "lon" : "-95.025204",
          "idx" : 4,
@@ -68,7 +63,6 @@ var Model = function() {
      }, {
          "name1" : "Bubba Gump Shrimp Co",
          "url" : "http://www.bubbagump.com/",
-         "category" : "food",
          "lat" : "29.548099",
          "lon" : "-95.018519",
          "idx" : 5,
@@ -77,7 +71,6 @@ var Model = function() {
      }, {
          "name1" : "Main Event Entertainment",
          "url" : "http://www.mainevent.com",
-         "category" : "entertainment",
          "lat" : "29.524015",
          "lon" : "-95.122994",
          "idx" : 6,
@@ -85,10 +78,6 @@ var Model = function() {
          "marker" : ""
      }
   ]; // locations
-
-/* Kemah AMusement Park
- * 4efb80b09adf02fe695a577e
- */
 
   this.getLocations = function() {
 	return this.locations;

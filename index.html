@@ -27,8 +27,6 @@
       var waitForMapsCounter = 0;
 
       function checkForMapsObjsLoaded(time) {
-          var self = this;
-
           waitForMapsCounter++;
 
           if (typeof google === 'object' && typeof google.maps === 'object')  {
@@ -53,17 +51,11 @@
           }
       } // waitForMapsObjsToLoad
 
-
       checkForMapsObjsLoaded(200);
-
-
 
      window.onload = loadGoogleMapsAPI;
 
-
      </script>
-
-
 
   </head>
   <body>
@@ -87,6 +79,7 @@
 				   </li>
 				 </ul>
 			   </div>
+
 		  </div>
         </div>
 

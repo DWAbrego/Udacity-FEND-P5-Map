@@ -1,16 +1,12 @@
 function initializeApp() {
+	// create new google maps view model
+	mapVm.initializeMap(model); // this also populates model markers
+	ko.applyBindings(mapVm, document.getElementById('vm-maps'));
 
-  console.log('initialize in initializeApp()');
+	viewModel.initializeVm(model);
+	ko.applyBindings(viewModel, document.getElementById('vm-list'));
 
-  // create a model which holds locations
-  var model = new Model();
-
-  // create new google maps view model
-  var mapvm = new MapVmAppObj(model);
-  mapvm.initializeMap(); // this also populates model markers
-  ko.applyBindings(mapvm, document.getElementById('vm-maps'));
-
-  ko.applyBindings(new viewModel(model), document.getElementById('vm-list'));
+	//ko.applyBindings(new viewModel(model), document.getElementById('vm-list'));
 }
 
 

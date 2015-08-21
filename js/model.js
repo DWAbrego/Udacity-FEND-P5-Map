@@ -18,9 +18,13 @@
 // https://developer.foursquare.com/docs/explore#req=venues/search%3Fll%3D29.547390,+-95.018434
 //
 //////////////////////////////////////////////////////////////
-var Model = function() {
 
-    this.locations = [{
+
+
+var model = {};
+
+
+model.locations = [{
          "name1" : "South Shore Harbor Resort",
          "url" : "http://www.sshr.com",
          "lat" : "29.545310",
@@ -79,19 +83,21 @@ var Model = function() {
      }
   ]; // locations
 
-  this.getLocations = function() {
-	return this.locations;
-  };
 
-  this.getOneLocation = function(i1) {
-	return this.locations[i1];
-  };
 
-  this.setLocationsMarker = function(i1, marker) {
-	this.locations[i1].marker = marker;
-  };
+model.getLocations = function() {
+return this.locations;
+};
 
-}
+model.getOneLocation = function(i1) {
+return this.locations[i1];
+};
+
+model.setLocationsMarker = function(i1, marker) {
+this.locations[i1].marker = marker;
+};
+
+
 
 
 

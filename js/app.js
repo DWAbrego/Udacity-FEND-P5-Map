@@ -1,6 +1,6 @@
 function initializeApp() {
 	// create new google maps view model
-	mapVm.initializeMap(model); // this also populates model markers
+	mapVm.initializeMap(model, "googleMap"); // this also populates model markers
 	ko.applyBindings(mapVm, document.getElementById('vm-maps'));
 
 	viewModel.initializeVm(model);

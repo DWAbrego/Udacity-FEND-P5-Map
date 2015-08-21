@@ -1,23 +1,24 @@
-
 <!--
-
+ 4^2 status messages
+resize on mobile size - fix this
+find things that i had to do on previous submits like lint or jshint
+rename maps.js to mapsvm
+comments
+maybe put status message in div inside map for when map fails
 -->
-
-
 <!DOCTYPE html>
+
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
 
     <title>Project 5</title>
-
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-
-      <script>
-     function loadGoogleMapsAPI() {
+    <script>
+ function loadGoogleMapsAPI() {
        var script = document.createElement('script');
        script.type = 'text/javascript';
        script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&callback=initializeApp';
@@ -55,65 +56,54 @@
 
      window.onload = loadGoogleMapsAPI;
 
-     </script>
+    </script>
+</head>
 
-  </head>
-  <body>
-
-
+<body>
     <div class="container-fluid" style="margin:10px;">
+        <div class="row">
+            <div class="col-md-3">
+                <div id="vm-list">
+                    <div class="wellx">
+                        <input data-bind=
+                        "value: filterText, textInput: filterText, valueUpdate: 'keyup'"
+                        placeholder="Search" type="search"> 
+                        <!-- <button data-bind="click: initializeMapVm">   Reset Map</button> -->
+                    </div>
 
-	  <div class="row">
+                    <div class="wellx">
+                        <ul data-bind="foreach: SearchResults1" id=
+                        "searchResults" style="margin:0; padding:0">
+                            <li><button data-bind=
+                            "text: name1, click: $parent.selectMarker">loading
+                            list...</button></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-        <div class="col-md-3">
-		  <div id="vm-list">
-			   <div  class="wellx">
-				 <input placeholder="Search"  type="search" data-bind="value: filterText, textInput: filterText, valueUpdate: 'keyup'" />
-				 <!-- <button data-bind="click: initializeMapVm">	Reset Map</button> -->
-			   </div>
+            <div class="col-md-9">
+                <div id="vm-maps">
+                    <div class="wellx">
+                        <span data-bind="html: statusMessage1" id=
+                        "statusMessage1"></span>
+                    </div>
 
-			   <div  class="wellx">
-				 <ul data-bind="foreach: SearchResults1" id="searchResults" style="margin:0; padding:0";>
-				   <li>
-					 <button data-bind="text: name1, click: $parent.selectMarker">loading list... </button>
-				   </li>
-				 </ul>
-			   </div>
-
-		  </div>
-        </div>
-
-        <div class="col-md-9">
-		  <div id="vm-maps">
-		   <div  class="wellx">
-             <span data-bind="html: statusMessage1" id="statusMessage1"></span>
-		   </div>
-		   <div  class="wellx">
-			  <div id="mapWell">
-				<div id="googleMap">loading map...</div>
-			  </div>
-		   </div>
-		  </div>
-        </div>
-
-
-	  </div> <!-- row -->
-
-
-    </div> <!-- container-fluid -->
-
-
-	<script type='text/javascript' src='js/jquery.min.js'></script>
-    <script src="js/bootstrap.min.js"></script>
-	<script type='text/javascript' src='js/knockout.js'></script>
-    <script src="js/model.js"></script>
-    <script src="js/maps.js"></script>
-    <script src="js/viewmodel.js"></script>
-    <script src="js/app.js"></script>
-
-
-
-
-
-  </body>
+                    <div class="wellx">
+                        <div id="mapWell">
+                            <div id="googleMap">
+                                loading map...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- row -->
+    </div><!-- container-fluid -->
+	<script src='js/jquery.min.js' type='text/javascript'>
+	</script> <script src="js/bootstrap.min.js"></script> 
+	<script src='js/knockout.js' type='text/javascript'></script> 
+	<script src="js/model.js"></script> <script src="js/maps.js"></script> 
+	<script src="js/viewmodel.js"></script> <script src="js/app.js"></script>
+</body>
 </html>

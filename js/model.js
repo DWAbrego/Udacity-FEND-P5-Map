@@ -76,14 +76,14 @@ model.locations = [{
     "marker": ""
 }]; // locations
 
-model.getLocations = function() {
+model.getLocations = function () {
     return this.locations;
 };
 
-model.getOneLocation = function(i1) {
+model.getOneLocation = function (i1) {
     return this.locations[i1];
 };
 
-model.setLocationsMarker = function(i1, marker) {
+model.setLocationsMarker = function (i1, marker) {
     this.locations[i1].marker = marker;
 };

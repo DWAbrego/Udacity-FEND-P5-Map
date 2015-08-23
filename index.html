@@ -1,10 +1,10 @@
 <!--
- 4^2 status messages
-resize on mobile size - fix this
+ (done) 4^2 status messages - 
+ (part. done)resize on mobile size - now need to fix mobile infowindow getting covered by nav
 find things that i had to do on previous submits like lint or jshint
-rename maps.js to mapsvm
 comments
-maybe put status message in div inside map for when map fails
+  (done) index.html 
+(done) maybe put status message in div inside map for when map fails 
 -->
 <!DOCTYPE html>
 
@@ -17,93 +17,125 @@ maybe put status message in div inside map for when map fails
     <title>Project 5</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+	<script src='js/jquery.min.js' type='text/javascript'>
+	</script>
+    
     <script>
- function loadGoogleMapsAPI() {
-       var script = document.createElement('script');
+
+    /////////////////////////////////////////////////////////////
+    //
+    // function loadGoogleMapsAPI()
+    //   This function will load the google maps API as a script
+    //   and append it to the DOM.
+    //
+    //   Note when loading the maps api, a callback function is          
+    //   appended to the url, and this callback will be fired          
+    //   when the script loads.  The callback is 'initializeApp'  
+    //   in app.js.              
+    //        
+    /////////////////////////////////////////////////////////////        
+    function loadGoogleMapsAPI() {
+       var script  = document.createElement('script');
        script.type = 'text/javascript';
-       script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&callback=initializeApp';
+       script.src  = 'https://maps.googleapis.com/maps/api/js?';
+       script.src += 'v=3.exp&signed_in=true&callback=initializeApp';
        document.body.appendChild(script);
-     }
+     } // loadGoogleMapsAPI()
 
-      var waitForMapsCounter = 0;
+    /////////////////////////////////////////////////////////////
+    //
+    // checkForMapsObjsLoaded(time)
+    //   This function check to see if the google maps object has
+    //   loaded.  We repeat the check several times by means of a 
+    //   timeout.  If the maps object did not load, then we are likely 
+    //   offline, and need to show an error.  
+    //
+    /////////////////////////////////////////////////////////////         
+     var waitForMapsCounter = 0;
+        
+     function checkForMapsObjsLoaded(time) {
+      waitForMapsCounter++;
 
-      function checkForMapsObjsLoaded(time) {
-          waitForMapsCounter++;
-
-          if (typeof google === 'object' && typeof google.maps === 'object')  {
-              console.log("wait yes");
+      if (typeof google === 'object' && typeof google.maps === 'object')  {
+          console.log("wait yes");
+          return;
+      }
+      else {
+          if(waitForMapsCounter > 10)
+          {
+              console.log("Google maps object taking too long to load, aborting");
+              alert("Google maps object taking too long to load, aborting");
+              $("#mapErr1").show();
               return;
           }
           else {
-              if(waitForMapsCounter > 10)
-              {
-                  console.log("Google maps object taking too long to load, aborting");
-                  alert("Google maps object taking too long to load, aborting");
-                  return;
-              }
-              else {
-                  console.log("Waiting to load google maps object");
+              console.log("Waiting to load google maps object");
 
-                  setTimeout(function() {
-                      console.log("wait no" + waitForMapsCounter);
-                      checkForMapsObjsLoaded(time);
-                  }, time);
-              }
+              setTimeout(function() {
+                  console.log("wait no" + waitForMapsCounter);
+                  checkForMapsObjsLoaded(time);
+              }, time);
           }
-      } // waitForMapsObjsToLoad
+      }
+    } // waitForMapsObjsToLoad
 
-      checkForMapsObjsLoaded(200);
-
-     window.onload = loadGoogleMapsAPI;
-
+    // execute our javascript functions here
+    checkForMapsObjsLoaded(200);
+    window.onload = loadGoogleMapsAPI;
     </script>
 </head>
 
 <body>
-    <div class="container-fluid" style="margin:10px;">
-        <div class="row">
-            <div class="col-md-3">
-                <div id="vm-list">
-                    <div class="wellx">
-                        <input data-bind=
-                        "value: filterText, textInput: filterText, valueUpdate: 'keyup'"
-                        placeholder="Search" type="search"> 
-                        <!-- <button data-bind="click: initializeMapVm">   Reset Map</button> -->
-                    </div>
+   
 
-                    <div class="wellx">
-                        <ul data-bind="foreach: SearchResults1" id=
-                        "searchResults" style="margin:0; padding:0">
-                            <li><button data-bind=
-                            "text: name1, click: $parent.selectMarker">loading
-                            list...</button></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
 
-            <div class="col-md-9">
-                <div id="vm-maps">
-                    <div class="wellx">
-                        <span data-bind="html: statusMessage1" id=
-                        "statusMessage1"></span>
-                    </div>
 
-                    <div class="wellx">
-                        <div id="mapWell">
-                            <div id="googleMap">
-                                loading map...
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div><!-- row -->
-    </div><!-- container-fluid -->
-	<script src='js/jquery.min.js' type='text/javascript'>
-	</script> <script src="js/bootstrap.min.js"></script> 
+
+
+
+
+    <div id="container">
+        <div id="nav">
+			<div id="vm-maps">
+				<span data-bind="html: statusMessage1" id=
+				"statusMessage1">
+					<div class="alert alert-danger" id="mapErr1">
+					    <strong>Error</strong> Unable to load Maps, search disabled, check internet connectivity
+					</div>                       
+				</span>
+			</div>
+			<div id="vm-list">
+				<input data-bind=
+				"value: filterText, textInput: filterText, valueUpdate: 'keyup'"
+				placeholder="Search..." type="search"> 
+				<ul data-bind="foreach: SearchResults1" id=
+				"searchResults" style="margin:0; padding:0">
+					<li><button data-bind=
+					"text: name1, click: $parent.selectMarker"></button>
+					</li>
+				</ul>
+			</div>
+			
+
+		</div>
+
+        <div id="googleMap"></div>
+    </div>
+
+
+
+
+
+
+			
+
+
+ 
+    <!-- <script src="js/bootstrap.min.js"></script>  -->
 	<script src='js/knockout.js' type='text/javascript'></script> 
-	<script src="js/model.js"></script> <script src="js/maps.js"></script> 
-	<script src="js/viewmodel.js"></script> <script src="js/app.js"></script>
+	<script src="js/model.js"></script> 
+    <script src="js/mapVm.js"></script> 
+	<script src="js/viewmodel.js"></script> 
+    <script src="js/app.js"></script>
 </body>
 </html>

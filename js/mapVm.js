@@ -66,6 +66,11 @@ mapVm.setMarkers = function() {
                 }
                 self.loadFourSquare(locationsTemp[i].foursquareid,
                     marker);
+                
+                // center map
+                var center1 = new google.maps.LatLng(locationsTemp[i].lat, locationsTemp[i].lon);
+                mapxx.panTo(center1);
+                
             }
         })(marker, i));
         self.model_.setLocationsMarker(i, marker);
@@ -74,7 +79,6 @@ mapVm.setMarkers = function() {
 //////////////////////////////////////////////////////////////
 //
 // loadFourSquare():
-//
 //
 // https://api.foursquare.com/v2/venues/4b6b4c20f964a52001ff2be3?client_id=MXDSBUBGPVFDLPZDUR1RPY0QNSP2YZ0X0JPAJNXSZ23CG5CU&client_secret=30515VPS1GZBJJ1K134WBAA4ZGCUCZXWEEMLVJFTCH5C2FCG&v=20130815"
 //
@@ -86,6 +90,11 @@ mapVm.loadFourSquare = function(foursquareid, marker1) {
     var vHereNow = "";
     var vBanner = "";
     var marker = marker1;
+    
+    var errStr1 = "<div class=\"alert alert-danger\">";
+    errStr1 += "<strong>Error</strong> Unable to load Foursquare, check internet connectivity";
+    errStr1 += "</div>";
+    
     var url = "https://api.foursquare.com/v2/venues/" + foursquareid;
     url += "?client_id=MXDSBUBGPVFDLPZDUR1RPY0QNSP2YZ0X0JPAJNXSZ23CG5CU";
     url +=
@@ -95,15 +104,13 @@ mapVm.loadFourSquare = function(foursquareid, marker1) {
     //console.log(url);
     // set timeout warning in case foursquare is down
     var wTimeout = setTimeout(function() {
-        self.statusMessage1_(
-            "<h3> 4^2 failed to get foursquare resources </h3>"
-        );
+        self.statusMessage1_(errStr1);
         console.log("failed to get foursquare resources");
     }, 8000);
     $.getJSON(url, function(data) {
         clearTimeout(wTimeout);
     }).done(function(data) {
-        self.statusMessage1("4^2 loaded successfully");
+        self.statusMessage1("");
         vname = "<h3>" + data.response.venue.name + "</h3>";
         vcount = "likes:" + data.response.venue.likes.count;
         vHereNow = "<br> here now: " + data.response.venue.hereNow.count;
@@ -126,9 +133,9 @@ mapVm.loadFourSquare = function(foursquareid, marker1) {
         self.str1 += vname + vcount + vHereNow + vBanner;
         self.infowindow_.setContent(self.str1);
         self.infowindow_.open(self.map_, marker);
-    }).fail(function() {
+    }).fail(function() {        
         console.log("loadFourSquare error");
-        self.statusMessage1("4^2 loaded error");
+        self.statusMessage1(errStr1);
     }).always(function(data) {
         //console.log( "complete");
     });

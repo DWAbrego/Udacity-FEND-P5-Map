@@ -1,10 +1,25 @@
-/////////////////////////////////////////////////////////////
-// maps.js:
 //////////////////////////////////////////////////////////////
+//
+// Daniel Abrego
+// Udacity FEND P5 Map Application
+//
+// mapVM.js: 
+//  This file will contain the definitions for the maps viewmodel.
+//
+//////////////////////////////////////////////////////////////
+
 var mapVm = {};
+
 //////////////////////////////////////////////////////////////
 //
 // initializeMap():
+//    This function is called in app.js to start off the creation
+//    of the google map.  It assumes the maps API has been called,
+//    and the div-id for the google map will be passed in the
+//    parameter 'mapId.'
+//
+//    Parameter 'model' is simply a reference to the model
+//    object for the application.
 //
 //////////////////////////////////////////////////////////////
 mapVm.initializeMap = function(model, mapId) {
@@ -16,9 +31,12 @@ mapVm.initializeMap = function(model, mapId) {
     this.createMap();
     this.setMarkers();
 };
+
 //////////////////////////////////////////////////////////////
 //
 // createMap():
+//    Create the map and infowindow using google API.  Store
+//    them as class variables.
 //
 //////////////////////////////////////////////////////////////
 mapVm.createMap = function() {
@@ -30,9 +48,9 @@ mapVm.createMap = function() {
     };
     this.map_ = new google.maps.Map(document.getElementById(this.mapId_),
         mapProp);
-    //map_ = new google.maps.Map(document.getElementById("googleMap"), mapProp);
     this.infowindow_ = new google.maps.InfoWindow();
 };
+
 //////////////////////////////////////////////////////////////
 //
 // setMarkers():
@@ -42,17 +60,25 @@ mapVm.setMarkers = function() {
     var self = this;
     var i;
     var mapxx = this.map_;
-    //console.log(this.map_);
-    //console.log(map_);
-    //console.log(this.map_ === map_);
+
+    // get reference to the model, the model stores references
+    // to markers for manipulation later
     var locationsTemp = self.model_.getLocations();
+
+    // for each location, create a reference to a marker
+    // and set up some actions for when it is clicked
     for (i = 0; i < locationsTemp.length; i++) {
+        // create marker animation
         var marker = new google.maps.Marker({
             animation: google.maps.Animation.DROP,
             position: new google.maps.LatLng(locationsTemp[i].lat,
                 locationsTemp[i].lon),
             map: mapxx
         });
+
+        // add click event listener to do something when a marker is clicked
+        // here we will animate it shortly, call foursquare api for some 3rd party
+        // information, and then center the map on the clicked location
         google.maps.event.addListener(marker, 'click', (function(marker, i) {
             return function() {
                 if (marker.getAnimation() != null) {
@@ -66,12 +92,12 @@ mapVm.setMarkers = function() {
                 }
                 self.loadFourSquare(locationsTemp[i].foursquareid,
                     marker);
-                
+
                 // center map
                 var center1 = new google.maps.LatLng(locationsTemp[i].lat, locationsTemp[i].lon);
                 mapxx.panTo(center1);
-                
-            }
+
+            };
         })(marker, i));
         self.model_.setLocationsMarker(i, marker);
     }
@@ -79,8 +105,8 @@ mapVm.setMarkers = function() {
 //////////////////////////////////////////////////////////////
 //
 // loadFourSquare():
-//
-// https://api.foursquare.com/v2/venues/4b6b4c20f964a52001ff2be3?client_id=MXDSBUBGPVFDLPZDUR1RPY0QNSP2YZ0X0JPAJNXSZ23CG5CU&client_secret=30515VPS1GZBJJ1K134WBAA4ZGCUCZXWEEMLVJFTCH5C2FCG&v=20130815"
+//   Call foursquare API and format some of the returned informatin
+//   in the maps infowindow for a single marker.
 //
 //////////////////////////////////////////////////////////////
 mapVm.loadFourSquare = function(foursquareid, marker1) {
@@ -90,18 +116,20 @@ mapVm.loadFourSquare = function(foursquareid, marker1) {
     var vHereNow = "";
     var vBanner = "";
     var marker = marker1;
-    
+
     var errStr1 = "<div class=\"alert alert-danger\">";
     errStr1 += "<strong>Error</strong> Unable to load Foursquare, check internet connectivity";
     errStr1 += "</div>";
-    
+
     var url = "https://api.foursquare.com/v2/venues/" + foursquareid;
-    url += "?client_id=MXDSBUBGPVFDLPZDUR1RPY0QNSP2YZ0X0JPAJNXSZ23CG5CU";
-    url +=
-        "&client_secret=30515VPS1GZBJJ1K134WBAA4ZGCUCZXWEEMLVJFTCH5C2FCG";
-    url += "&v=20130815"; // version parameter
+		url += "?client_id=MXDSBUBGPVFDLPZDUR1RPY0QNSP2YZ0X0JPAJNXSZ23CG5CU";
+		url +=
+		    "&client_secret=30515VPS1GZBJJ1K134WBAA4ZGCUCZXWEEMLVJFTCH5C2FCG";
+		url += "&v=20130815"; // version parameter
+
     // uncomment this to get url for ajax request (in case you need to see the json)
     //console.log(url);
+
     // set timeout warning in case foursquare is down
     var wTimeout = setTimeout(function() {
         self.statusMessage1_(errStr1);
@@ -121,22 +149,22 @@ mapVm.loadFourSquare = function(foursquareid, marker1) {
                 if (!(typeof data.response.venue.page.pageInfo.banner ===
                     'undefined')) {
                     //console.log(data.response.venue.page.pageInfo.banner);
-                    vBanner = "<br><div><img class='resize' src='" +
+                    vBanner = "<br><div><img class='resizeImg1' src='" +
                         data.response.venue.page.pageInfo.banner +
                         "'></div>";
                 }
             }
         }
-        // https://foursquare.com/about/logos
+
+        // logo info was here https://foursquare.com/about/logos
         self.str1 =
             "<img src='https://playfoursquare.s3.amazonaws.com/press/2014/foursquare-icon-16x16.png'> <br>";
         self.str1 += vname + vcount + vHereNow + vBanner;
         self.infowindow_.setContent(self.str1);
         self.infowindow_.open(self.map_, marker);
-    }).fail(function() {        
+    }).fail(function() {
         console.log("loadFourSquare error");
         self.statusMessage1(errStr1);
     }).always(function(data) {
-        //console.log( "complete");
     });
 }; // loadFourSquare()

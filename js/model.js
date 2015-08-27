@@ -1,23 +1,23 @@
 //////////////////////////////////////////////////////////////
 //
-// model.js
+// Daniel Abrego
+// Udacity FEND P5 Map Application
+// 
+// model.js :
+//  This file will contain the definition for the model -
+//  both data and get/set methods.
 //
 //////////////////////////////////////////////////////////////
+
+
 ////////////////////////////////////////////////////////////////
 //
-// Model():
-//
-// Found 'foursquareid' by looking up the business in foursquare, and
-// the id is the last part of the URL e.g.
-// https://foursquare.com/v/aquarium-restaurant/4aede92ff964a52023d021e3
-//
-// If there was a pretty url with no id, then I found the id by using the Foursquare
-// api explorer here (venue search,and substitute where ll = long/lat)
-// https://developer.foursquare.com/docs/explore#req=venues/search%3Fll%3D29.547390,+-95.018434
+// Model(): constructor
 //
 //////////////////////////////////////////////////////////////
 var model = {};
 
+// data points
 model.locations = [{
     "name1": "South Shore Harbor Resort",
     "url": "http://www.sshr.com",
@@ -76,6 +76,8 @@ model.locations = [{
     "marker": ""
 }]; // locations
 
+
+// functions to access and set data in the model
 model.getLocations = function () {
     return this.locations;
 };

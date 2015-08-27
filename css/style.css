@@ -1,56 +1,80 @@
-  html { height: 100% }
-  body { height: 100%; margin: 0px; padding: 0px }
-  #container { width: 100%; height: 100% }
-  #nav { 
-		z-index: 100; 
-		position: absolute; 
-		margin: 10px 10px 0px 10px; 
-		background-color: #fff; 
-		border: 1px #000 Solid; padding: 5px; 
+/****************************************************************
+//
+// Daniel Abrego
+// Udacity FEND P5 Map Application
+//
+// style.css:
+//   User defined css styles.
+//  
+****************************************************************/
+
+html { height: 100% }
+body { height: 100%; margin: 0px; padding: 0px }
+
+/****************************************************************
+*
+* container elements
+*
+****************************************************************/
+
+/* container for all the views elements */
+#container { width: 100%; height: 100% }
+
+/* container for floating <ul> list */
+#nav {
+	z-index: 100;
+	position: absolute;
+	margin: 10px 10px 0px 10px;
+	background-color: #fff;
+	border: 1px #000 Solid; padding: 5px;
 }
 
-/*
-  #map { width: 100%; height: 100% }
-*/
-
-/* full page maps http://jsfiddle.net/8PpjH/1/ full-page */
-
-
-
-
-
+/****************************************************************
+*
+* html form elements
+*
+****************************************************************/
+/* text box */
 input {
   border: 1px solid #000000;
 }
 
-
-
-#googleMap {
-	width:100%;
-	height:100%;
-}
-
+/* the search list results will be buttons */
 button {
   border-style: none;
   margin:5px;
-  /* min-width: 145px; */
   background-color: white;
-  /* color: whitesmoke; 
-  border-radius: 25px;
-  padding:10px; */
 }
 
-
-body {
-  background-color:lightGray;
+/* we want a different style for the 'toggle list' button */
+button.b2 {
+  border-style: none;
+  margin:5px;
+  background-color: #337ab7;
+  color: whitesmoke;
 }
 
 ul {
     list-style-type: none;
 }
 
+/* this is the <ul></ul> containing search results */
+#searchResults{
+  padding-left:4px;
+}
 
+/****************************************************************
+*
+* map and map error messages styles
+*
+****************************************************************/
+/* map div */
+#googleMap {
+	width:100%;
+	height:100%;
+}
 
+/* map error message */
 #mapErr1 {
   display:none;
 }
@@ -60,69 +84,10 @@ ul {
   height:680px;
 }
 
-/* this is the <ul></ul> containing search results */
-#searchResults{
-  padding-left:4px;
-}
-
-/* resize the image appearing in info window above google map marker */
-.resize {
+/* resize the image appearing in foursquare info window above google map marker */
+.resizeImg1 {
   width:300px;
   height: auto;
 }
-/********************************************************************
- * Mobile
- ********************************************************************/
-@media only screen and (max-width: 767px), only screen and (max-device-width: 767px) {
-  #mapWell {
-    height:342px;
-  }
-button {
-  width: 200px;
-}
-
-li {
-    display: inline;
-}
-
-}
-
-/********************************************************************
- * Tablet
- ********************************************************************/
-@media only screen and (min-width : 768px) and (max-width : 1024px) {
-  #mapWell {
-    height:695px;
-  }
-button {
-  width: 200px;
-}
-
-li {
-    display: inline;
-}
-
-}
-
-/********************************************************************
- * Tablet (landscape)
- ********************************************************************/
-@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {
-  #mapWell {
-    height:650px;
-  }
-
-button {
-  width: 200px;
-}
-
-li {
-    display: inline;
-}
-
-}
-
-
-
 
 

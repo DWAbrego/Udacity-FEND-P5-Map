@@ -1,40 +1,13 @@
 <!DOCTYPE html>
 
 <!--  ===========================================================
- (done) 4^2 status messages -
- (done)resize on mobile size - now need to fix mobile infowindow getting covered by nav
-find things that i had to do on previous submits like lint or jshint
-
-(done) maybe put status message in div inside map for when map fails
-
-
-(done) comments >>> index.html, modeljs, viewmodel, style.css, app.js, mapVM.js
-
-remove whitespace >>>
-
-(done)  html validator validator.w3.org  >>> index.html
-
-(done) css validator  jigsaw.w3.org/css-validator  >>>
-
-css style guide  http://goo.gl/0EVzNy  >>>
-
-(done) jshint - some things like undefined variables 'ko' and 'google'
-
-dirtymarkup.com
-
-README
-
-
-
-
 Daniel Abrego
 Udacity FEND P5 Map Application
 
 index.html:
   This is the main page for the P5 Maps application.  This page will
   load the google maps API, and when the API returns, it will initiate
-  a callback function initializeApp() found in app.js.  This is all
-  done in the js function below loadGoogleMapsAPI().
+  a callback function initializeApp() found in app.js.
 
 ================================================================== -->
 
@@ -88,22 +61,18 @@ index.html:
       waitForMapsCounter++;
 
       if (typeof google === 'object' && typeof google.maps === 'object')  {
-          console.log("wait yes");
           return;
       }
       else {
           if(waitForMapsCounter > 10)
           {
-              console.log("Google maps object taking too long to load, aborting");
               alert("Google maps object taking too long to load, aborting");
               $("#mapErr1").show();
               return;
           }
           else {
-              console.log("Waiting to load google maps object");
 
               setTimeout(function() {
-                  console.log("wait no" + waitForMapsCounter);
                   checkForMapsObjsLoaded(time);
               }, time);
           }

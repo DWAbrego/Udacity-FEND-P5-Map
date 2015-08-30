@@ -5,6 +5,7 @@
 //
 // viewmodel.js:
 //  This file will contain definitions for the viewmodel.
+//  This will provide functionality for the list and search box.
 //
 //////////////////////////////////////////////////////////////
 

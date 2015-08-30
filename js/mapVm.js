@@ -133,7 +133,6 @@ mapVm.loadFourSquare = function(foursquareid, marker1) {
     // set timeout warning in case foursquare is down
     var wTimeout = setTimeout(function() {
         self.statusMessage1_(errStr1);
-        console.log("failed to get foursquare resources");
     }, 8000);
     $.getJSON(url, function(data) {
         clearTimeout(wTimeout);
@@ -148,7 +147,6 @@ mapVm.loadFourSquare = function(foursquareid, marker1) {
                 'undefined')) {
                 if (!(typeof data.response.venue.page.pageInfo.banner ===
                     'undefined')) {
-                    //console.log(data.response.venue.page.pageInfo.banner);
                     vBanner = "<br><div><img class='resizeImg1' src='" +
                         data.response.venue.page.pageInfo.banner +
                         "'></div>";
@@ -163,7 +161,6 @@ mapVm.loadFourSquare = function(foursquareid, marker1) {
         self.infowindow_.setContent(self.str1);
         self.infowindow_.open(self.map_, marker);
     }).fail(function() {
-        console.log("loadFourSquare error");
         self.statusMessage1(errStr1);
     }).always(function(data) {
     });

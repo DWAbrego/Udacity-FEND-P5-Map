@@ -7,26 +7,26 @@
 
 ===================================================================
 
-This application will be a single page application of a Houston neighborhood 
-close to where I live.  The application will have:
+This application will be a single page application of a Houston 
+neighborhood close to where I live. The application will have:
 - a google map
 - a hard coded list of google map markers that bounce 3 times when clicked
 - a search bar that filters the locations as you type into an input text box
 - clickable google map markers on the google map itself
 
-When a google map marker is clicked, either from the list or from the marker itself,
-an infowindow will popup over the marker.  The infowindow will pull data from 
-the Foursquare api and it will display 'likes', 'here now', and a banner image 
-if one exists.  
+When a google map marker is clicked, either from the list or from the marker 
+itself, an infowindow will popup over the marker.  The infowindow will pull 
+data from the Foursquare api and it will display 'likes', 'here now', and 
+a banner image if one exists.  
 
-There is a 'toggle list' button to hide the list of locations if a smaller screen is being
-utilized.  
+There is a 'toggle list' button to hide the list of locations if a smaller 
+screen is being utilized.  
 
 ===================================================================
 Files:
 ===================================================================
-This application will consider the list as one viewmodel, and the map
-will be another viewmodel.  
+This application will consider the list as one viewmodel, and 
+the map will be another viewmodel.  
 
 index.html
 	This is the only html file in the application.  
@@ -35,17 +35,19 @@ css/style.css
 	Custom css styles are contained in this file.  
 
 js/app.js: 
-	This file contains the script that initializes the 2 viewmodels.  
+	This file contains the script that initializes the 2 
+	viewmodels.  
 
 js/mapVm.js :  
-	This file will encapsulate the workings of google maps API into a single class.  
-	It will include the methods necessary to grab data from the Foursquare API.  
-	This will also have a knockout binding for an error message when the map API
+	This file will encapsulate the workings of google maps API 
+	into a single class.  It will include the methods necessary 
+	to grab data from the Foursquare API.  This will also have 
+	a knockout binding for an error message when the map API
 	cannot be loaded.  
 
 js/model.js  
-	This file will hold the data for the locations.  It will provide methods to
-	manipulate this data as needed.  
+	This file will hold the data for the locations.  It will 
+	provide methods to manipulate this data as needed.  
 
 js/viewmodel.js
 	This file will use knockout bindings to operate the list and 
@@ -56,9 +58,16 @@ Resources:
 ===================================================================
 (1) Knockout website documentation
 (2) Misc chapters from Safari books - 
-	Google Maps Javascript API Cookbook,  Alper Dincer; Balkan Uraz
-	Building a Single Page Web Application with Knockout.js (Video) by David Ly; Chris Black
-	Beginning Google Maps Mashups with Mapplets, KML, and GeoRSS: From Novice to Professional by Sterling Udell
+
+	Google Maps Javascript API Cookbook,  
+	Alper Dincer; Balkan Uraz
+
+	Building a Single Page Web Application with Knockout.js (Video) 
+	by David Ly; Chris Black
+
+	Beginning Google Maps Mashups with Mapplets, KML, and GeoRSS: 
+	From Novice to Professional by Sterling Udell
+
 	The Principles of Object-Oriented JavaScript by Nicholas C. Zakas
 
 

@@ -2,7 +2,7 @@
 //
 // Daniel Abrego
 // Udacity FEND P5 Map Application
-// 
+//
 // model.js :
 //  This file will contain the definition for the model -
 //  both data and get/set methods.

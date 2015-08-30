@@ -2,7 +2,7 @@
 //
 // Daniel Abrego
 // Udacity FEND P5 Map Application
-// 
+//
 // viewmodel.js:
 //  This file will contain definitions for the viewmodel.
 //

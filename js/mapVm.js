@@ -3,7 +3,7 @@
 // Daniel Abrego
 // Udacity FEND P5 Map Application
 //
-// mapVM.js: 
+// mapVM.js:
 //  This file will contain the definitions for the maps viewmodel.
 //
 //////////////////////////////////////////////////////////////

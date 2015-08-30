@@ -3,7 +3,7 @@
 // Daniel Abrego
 // Udacity FEND P5 Map Application
 //
-// app.js:  
+// app.js:
 //  This file will contain the callback function that is
 //  kicked off when the google maps API is loaded in index.html.
 //  The maps API is loaded by javascript function loadGoogleMapsAPI().

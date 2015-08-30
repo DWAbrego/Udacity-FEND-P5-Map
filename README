@@ -23,7 +23,7 @@ There is a 'toggle list' button to hide the list of locations if a smaller
 screen is being utilized.  
 
 ===================================================================
-Files:
+### Files:
 ===================================================================
 This application will consider the list as one viewmodel, and 
 the map will be another viewmodel.  
@@ -54,7 +54,7 @@ js/viewmodel.js
 	filter text box.  
 
 ===================================================================
-Resources:
+### Resources:
 ===================================================================
 (1) Knockout website documentation
 (2) Misc chapters from Safari books - 

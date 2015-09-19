@@ -5,11 +5,18 @@
 //
 // style.css:
 //   User defined css styles.
-//  
+//
 ****************************************************************/
 
-html { height: 100% }
-body { height: 100%; margin: 0px; padding: 0px }
+html {
+  height: 100%
+}
+
+body {
+  height: 100%;
+  margin: 0px;
+  padding: 0px
+}
 
 /****************************************************************
 *
@@ -18,15 +25,19 @@ body { height: 100%; margin: 0px; padding: 0px }
 ****************************************************************/
 
 /* container for all the views elements */
-#container { width: 100%; height: 100% }
+#container {
+  width: 100%;
+  height: 100%
+}
 
 /* container for floating <ul> list */
 #nav {
 	z-index: 100;
 	position: absolute;
-	margin: 10px 10px 0px 10px;
+	margin: 10px 10px 0 10px;
 	background-color: #fff;
-	border: 1px #000 Solid; padding: 5px;
+	border: 1px #000 Solid;
+    padding: 5px;
 }
 
 /****************************************************************
@@ -36,20 +47,20 @@ body { height: 100%; margin: 0px; padding: 0px }
 ****************************************************************/
 /* text box */
 input {
-  border: 1px solid #000000;
+  border: 1px solid #000;
 }
 
 /* the search list results will be buttons */
 button {
   border-style: none;
-  margin:5px;
+  margin: 5px;
   background-color: white;
 }
 
 /* we want a different style for the 'toggle list' button */
-button.b2 {
+#toggleListBtn {
   border-style: none;
-  margin:5px;
+  margin: 5px;
   background-color: #337ab7;
   color: whitesmoke;
 }
@@ -60,7 +71,7 @@ ul {
 
 /* this is the <ul></ul> containing search results */
 #searchResults{
-  padding-left:4px;
+  padding-left: 4px;
 }
 
 /****************************************************************
@@ -70,24 +81,22 @@ ul {
 ****************************************************************/
 /* map div */
 #googleMap {
-	width:100%;
-	height:100%;
+	width: 100%;
+	height: 100%;
 }
 
 /* map error message */
 #mapErr1 {
-  display:none;
+  display: none;
 }
 
 /* div surrounding the google map */
 #mapWell {
-  height:680px;
+  height: 680px;
 }
 
 /* resize the image appearing in foursquare info window above google map marker */
 .resizeImg1 {
-  width:300px;
+  width: 300px;
   height: auto;
 }
-
-

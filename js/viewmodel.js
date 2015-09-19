@@ -36,8 +36,10 @@ viewModel.initializeVm = function(model) {
     self.SearchResults1 = ko.computed(function() {
       	var i1;
 
+        var llength = self.model_.locations.length;
+
 		// first make all markers invisible
-        for (i1 = 0; i1 < self.model_.locations.length; i1++) {
+        for (i1 = 0; i1 < llength; i1++) {
             self.model_.locations[i1].marker.setVisible(false);
         }
 
@@ -45,7 +47,7 @@ viewModel.initializeVm = function(model) {
         return ko.utils.arrayFilter(self.placesArrayObs(), function(
             item) {
             var filter = self.filterText().toLowerCase();
-            for (i1 = 0; i1 < self.model_.locations.length; i1++) {
+            for (i1 = 0; i1 < llength; i1++) {
                 if (stringStartsWith(self.model_.locations[i1].name1.toLowerCase(), filter)) {
                     self.model_.locations[i1].marker.setVisible(
                         true);

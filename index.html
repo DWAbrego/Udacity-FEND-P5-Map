@@ -21,7 +21,7 @@ index.html:
     <title>Project 5</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-	<script src='js/jquery.min.js' type='text/javascript'></script>
+	<script src="js/jquery.min.js" type="text/javascript"></script>
 
     <script>
 	//----------------------------------------------------------------
@@ -40,7 +40,6 @@ index.html:
     /////////////////////////////////////////////////////////////
     function loadGoogleMapsAPI() {
        var script  = document.createElement('script');
-       script.type = 'text/javascript';
        script.src  = 'https://maps.googleapis.com/maps/api/js?';
        script.src += 'v=3.exp&signed_in=true&callback=initializeApp';
        document.body.appendChild(script);
@@ -101,7 +100,7 @@ index.html:
 				<input data-bind="value: filterText, textInput: filterText, valueUpdate: 'keyup'"
 						placeholder="Search..." type="search">
 
-				<button id="toggleListBtn" class="b2">toggle list</button>
+				<button id="toggleListBtn">toggle list</button>
 
 				<ul data-bind="foreach: SearchResults1" id="searchResults" style="margin:0; padding:0">
 					<li><button data-bind="text: name1, click: $parent.selectMarker"></button>
@@ -125,7 +124,7 @@ index.html:
 	//----------------------------------------------------------------
 	</script>
 
-	<script src='js/knockout.js' type='text/javascript'></script>
+	<script src="js/knockout.js" type="text/javascript"></script>
 	<script src="js/model.js"></script>
     <script src="js/mapVm.js"></script>
 	<script src="js/viewmodel.js"></script>
